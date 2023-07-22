@@ -2,7 +2,7 @@ import { Box, styled } from "@mui/material";
 import { FC, Fragment, useState } from "react";
 import { Outlet } from "react-router-dom";
 import DashboardNavbar from "./DashboardNavbar";
-import DashboardSidebar from "./DashboardSideBar";
+import DashboardSideBar from "./DashboardSideBar";
 
 // styled components
 const Wrapper = styled(Box)(({ theme }) => ({
@@ -23,7 +23,7 @@ const DashboardLayout: FC = ({ children }) => {
 
   return (
     <Fragment>
-      <DashboardSidebar
+      <DashboardSideBar
         showMobileSideBar={showMobileSideBar}
         closeMobileSideBar={() => setShowMobileSideBar(false)}
       />
@@ -32,6 +32,7 @@ const DashboardLayout: FC = ({ children }) => {
         <DashboardNavbar
           setShowMobileSideBar={() => setShowMobileSideBar((state) => !state)}
         />
+        {/* Place hoder for children*/}
         {children || <Outlet />}
       </Wrapper>
     </Fragment>

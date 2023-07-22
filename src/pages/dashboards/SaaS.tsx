@@ -22,25 +22,25 @@ const SaaS: FC = () => {
     {
       price: 574,
       Icon: BucketIcon,
-      title: "All Spending",
+      title: "Events",
       color: theme.palette.primary.main,
     },
     {
       price: 521,
-      title: "Earnings",
+      title: "Received Blood",
       Icon: EarningIcon,
       color: theme.palette.primary.purple,
     },
     {
       price: 684,
       Icon: WindowsLogoIcon,
-      title: "Weekly revenue",
+      title: "Volunteer",
       color: theme.palette.primary.red,
     },
     {
       price: 321,
       Icon: PeopleIcon,
-      title: "New Clients",
+      title: "Donors",
       color: theme.palette.primary.yellow,
     },
   ];

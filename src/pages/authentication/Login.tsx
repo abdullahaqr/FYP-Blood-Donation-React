@@ -3,22 +3,16 @@ import {
   Box,
   Button,
   Card,
-  Divider,
   FormControlLabel,
   FormHelperText,
   Switch,
 } from "@mui/material";
-import {
-  SocialIconButton,
-  TextFieldWrapper,
-} from "components/authentication/StyledComponents";
+import { TextFieldWrapper } from "components/authentication/StyledComponents";
 import FlexBox from "components/FlexBox";
 import LightTextField from "components/LightTextField";
-import { H1, H3, Paragraph, Small } from "components/Typography";
+import { H1, Paragraph, Small } from "components/Typography";
 import { useFormik } from "formik";
 import useAuth from "hooks/useAuth";
-import FacebookIcon from "icons/FacebookIcon";
-import GoogleIcon from "icons/GoogleIcon";
 import { FC, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
@@ -86,12 +80,12 @@ const Login: FC = () => {
             <img src="/static/logo/logo.svg" width="100%" alt="Uko Logo" />
           </Box>
           <H1 fontSize={24} fontWeight={700}>
-            Sign In to Uko
+            Sign In
           </H1>
         </FlexBox>
 
         <FlexBox justifyContent="space-between" flexWrap="wrap" my="1rem">
-          <SocialIconButton
+          {/* <SocialIconButton
             // onClick={loginWithGoogle}
             startIcon={<GoogleIcon sx={{ mr: 1 }} />}
           >
@@ -108,7 +102,7 @@ const Login: FC = () => {
             <H3 color="text.disabled" px={1}>
               Or
             </H3>
-          </Divider>
+          </Divider> */}
 
           <form noValidate onSubmit={handleSubmit} style={{ width: "100%" }}>
             <FlexBox justifyContent="space-between" flexWrap="wrap">

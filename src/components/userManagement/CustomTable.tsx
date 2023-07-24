@@ -1,7 +1,9 @@
 import { ArrowRightAlt } from "@mui/icons-material";
 import {
   Box,
+  Button,
   ButtonBase,
+  Modal,
   Pagination,
   Stack,
   styled,
@@ -10,11 +12,12 @@ import {
   TableCell,
   TableHead,
   TableRow,
+  TextField,
   useTheme,
 } from "@mui/material";
 import FlexBox from "components/FlexBox";
 import { H5 } from "components/Typography";
-import { ChangeEvent, FC, useMemo } from "react";
+import { ChangeEvent, FC, useMemo, useState } from "react";
 import {
   useExpanded,
   usePagination,
@@ -31,6 +34,8 @@ interface CustomTableProps {
   rowClick?: (rowData: object) => void;
   hidePagination?: boolean;
   showFooter?: boolean;
+  modalOpen?: boolean;
+  modalClose?: Function;
 }
 
 // styled component
@@ -62,7 +67,16 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
 }));
 
 const CustomTable: FC<CustomTableProps> = (props) => {
-  const { data, rowClick, showFooter, columnShape, hidePagination } = props;
+  const {
+    data,
+    rowClick,
+    showFooter,
+    columnShape,
+    hidePagination,
+    modalOpen,
+    modalClose,
+  } = props;
+  const [category, setCategory] = useState("");
   // hooks
   const theme = useTheme();
   const tableData: any = useMemo(() => data, [data]);
@@ -90,11 +104,39 @@ const CustomTable: FC<CustomTableProps> = (props) => {
   const handleChange = (_e: ChangeEvent<unknown>, currentPageNo: number) => {
     gotoPage(currentPageNo - 1);
   };
+  // const handleClose = () => modalClose(false);
+  const handleModalChange = (e: any) => {
+    setCategory(e.target.value);
+  };
+  const handleAddCategory = () => {
+    setCategory("");
+  };
 
   // table border color
   const borderColor =
     theme.palette.mode === "light" ? "text.secondary" : "divider";
-
+  const style = {
+    modal: {
+      position: "absolute" as "absolute",
+      top: "50%",
+      left: "50%",
+      transform: "translate(-50%, -50%)",
+      width: 400,
+      bgcolor: "background.paper",
+      border: "2px solid #000",
+      boxShadow: 24,
+      p: 4,
+    },
+    addBtn: {
+      backgroundColor: "blue",
+      marginTop: "2rem",
+    },
+    closeBtn: {
+      backgroundColor: "red",
+      marginTop: "2rem",
+      marginLeft: "1.2rem",
+    },
+  };
   return (
     <Box>
       <ScrollBar>
@@ -207,6 +249,39 @@ const CustomTable: FC<CustomTableProps> = (props) => {
             <ArrowRightAlt sx={{ marginLeft: 0.5 }} />
           </ButtonBase>
         </FlexBox>
+      )}
+      {modalOpen && modalClose && (
+        <Modal
+          open={modalOpen}
+          // onClose={handleClose}
+          aria-labelledby="modal-modal-title"
+          aria-describedby="modal-modal-description"
+        >
+          <Box sx={style.modal}>
+            <TextField
+              defaultValue=""
+              onChange={handleModalChange}
+              id="outlined-basic"
+              label="Add Category"
+              variant="outlined"
+              value={category}
+            />
+            <Button
+              style={style.addBtn}
+              variant="contained"
+              onClick={handleAddCategory}
+            >
+              Add Category
+            </Button>
+            <Button
+              style={style.closeBtn}
+              variant="contained"
+              onClick={() => modalClose(false)}
+            >
+              Close
+            </Button>
+          </Box>
+        </Modal>
       )}
     </Box>
   );

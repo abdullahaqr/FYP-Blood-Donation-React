@@ -8,8 +8,8 @@ const index = [
   },
   {
     title: "Blogs Category",
-    Icon: Icons.UserProfileIcon,
-    path: "/dashboard/blogs",
+    Icon: Icons.AddCircleIcon,
+    path: "/dashboard/blogs-category",
   },
   // {
   //   title: "User Grid",

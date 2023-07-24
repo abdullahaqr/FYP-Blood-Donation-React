@@ -1,6 +1,7 @@
 import GuestGuard from "components/authentication/GuestGuard";
 import DashboardLayout from "components/Layouts/DashboardLayout";
 import LoadingScreen from "components/LoadingScreen";
+import BlogCategory from "pages/Blogs/UserList";
 import { FC, lazy, LazyExoticComponent, Suspense } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -74,7 +75,7 @@ const routes = [
     path: "dashboard",
     element: (
       // <AuthGuard>
-        <DashboardLayout />
+      <DashboardLayout />
       // </AuthGuard>
     ),
     children: [
@@ -98,6 +99,10 @@ const routes = [
       {
         path: "add-user",
         element: <AddNewUser />,
+      },
+      {
+        path: "blogs-category",
+        element: <BlogCategory />,
       },
     ],
   },

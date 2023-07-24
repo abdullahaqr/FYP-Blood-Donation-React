@@ -1,8 +1,9 @@
 import {
-  GridView as UserGridIcon,
-  Login as LoginIcon,
   PersonAdd as AddUserIcon,
+  Login as LoginIcon,
+  GridView as UserGridIcon,
 } from "@mui/icons-material";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DashboardIcon from "./Dashboard";
 import SessionsIcon from "./Sessions";
 import UserManagementIcon from "./UserManagement";
@@ -17,4 +18,5 @@ export default {
   DashboardIcon,
   UserProfileIcon,
   UserManagementIcon,
+  AddCircleIcon,
 };

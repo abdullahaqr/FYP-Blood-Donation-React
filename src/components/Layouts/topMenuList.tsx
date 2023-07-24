@@ -7,15 +7,15 @@ const index = [
     path: "/dashboard",
   },
   {
-    title: "User Profile",
+    title: "Blogs Category",
     Icon: Icons.UserProfileIcon,
-    path: "/dashboard/user-profile",
+    path: "/dashboard/blogs",
   },
-  {
-    title: "User Grid",
-    Icon: Icons.UserGridIcon,
-    path: "/dashboard/user-grid",
-  },
+  // {
+  //   title: "User Grid",
+  //   Icon: Icons.UserGridIcon,
+  //   path: "/dashboard/user-grid",
+  // },
   {
     title: "User List",
     Icon: Icons.UserManagementIcon,

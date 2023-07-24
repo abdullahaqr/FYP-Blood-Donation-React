@@ -1,9 +1,6 @@
 import { Box, Grid, useTheme } from "@mui/material";
 import Analytics from "components/Dashboards/saas/Analytics";
 import SaaSCard from "components/Dashboards/saas/Card";
-import Footer from "components/Dashboards/saas/Footer";
-import RecentOrders from "components/Dashboards/saas/RecentOrders";
-import TopSelling from "components/Dashboards/saas/TopSelling";
 import TotalSpent from "components/Dashboards/saas/TotalSpent";
 import useTitle from "hooks/useTitle";
 import BucketIcon from "icons/BucketIcon";
@@ -14,7 +11,7 @@ import { FC } from "react";
 
 const SaaS: FC = () => {
   // change navbar title
-  useTitle("Saas");
+  useTitle("Blood Donation");
 
   const theme = useTheme();
 
@@ -63,16 +60,16 @@ const SaaS: FC = () => {
           <Analytics />
         </Grid>
 
-        <Grid item lg={8} md={7} xs={12}>
+        {/* <Grid item lg={8} md={7} xs={12}>
           <RecentOrders />
         </Grid>
         <Grid item lg={4} md={5} xs={12}>
           <TopSelling />
-        </Grid>
+        </Grid> */}
 
-        <Grid item xs={12}>
+        {/* <Grid item xs={12}>
           <Footer imageLink="/static/illustration/sass-dashboard.svg" />
-        </Grid>
+        </Grid> */}
       </Grid>
     </Box>
   );

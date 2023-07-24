@@ -1,4 +1,4 @@
-import { Box, Card, useTheme } from "@mui/material";
+  import { Box, Card, useTheme } from "@mui/material";
 import { ApexOptions } from "apexcharts";
 import { H2, H5 } from "components/Typography";
 import { FC } from "react";
@@ -116,14 +116,15 @@ const TotalSpent: FC = () => {
     <Card
       sx={{
         paddingX: 4,
+
         height: "100%",
         paddingBottom: "1.5rem",
         paddingTop: "calc(1.5rem + 15px)",
         [theme.breakpoints.down(425)]: { padding: "1.5rem" },
       }}
     >
-      <H5>Total Spent</H5>
-      <H2 color="primary.main">$682.5</H2>
+      <H5>Received Blood</H5>
+      <H2 color="primary.main">682</H2>
 
       <Box
         sx={{

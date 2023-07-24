@@ -101,14 +101,14 @@ const DashboardNavbar: FC<DashboardNavBarProps> = ({
 
         <Box flexGrow={1} ml={1} />
 
-        {upSm && (
+        {/* {upSm && (
           <>
             <LanguagePopover />
             <NotificationsPopover />
             <ServicePopover />
           </>
         )}
-        <ProfilePopover />
+        <ProfilePopover /> */}
       </StyledToolBar>
     </DashboardNavbarRoot>
   );

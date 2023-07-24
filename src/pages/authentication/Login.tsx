@@ -25,8 +25,8 @@ const Login: FC = () => {
   let navigate = useNavigate();
 
   const initialValues = {
-    email: "demo@example.com",
-    password: "v&)3?2]:",
+    email: "abdullahaqr786@gmail.com",
+    password: "Abd@12345",
     submit: null,
     remember: true,
   };

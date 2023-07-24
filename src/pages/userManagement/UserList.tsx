@@ -26,7 +26,8 @@ const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
 
 const UserList: FC = () => {
   // change navbar title
-  useTitle("User List");
+  // useTitle("User List");
+  useTitle("Donor List");
 
   const navigate = useNavigate();
   const handleAddUser = () => navigate("/dashboard/add-user");

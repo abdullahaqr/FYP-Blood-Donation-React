@@ -1,4 +1,3 @@
-import AuthGuard from "components/authentication/AuthGuard";
 import GuestGuard from "components/authentication/GuestGuard";
 import DashboardLayout from "components/Layouts/DashboardLayout";
 import LoadingScreen from "components/LoadingScreen";
@@ -74,9 +73,9 @@ const routes = [
   {
     path: "dashboard",
     element: (
-      <AuthGuard>
+      // <AuthGuard>
         <DashboardLayout />
-      </AuthGuard>
+      // </AuthGuard>
     ),
     children: [
       {

@@ -2,6 +2,7 @@ import LoadingScreen from "components/LoadingScreen";
 import jwtDecode from "jwt-decode";
 import { createContext, ReactNode, useEffect, useReducer } from "react";
 import axios from "utils/axios";
+import apiHelper from "utils/axiosSetup";
 
 // All types
 // =============================================
@@ -123,7 +124,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const login = async (email: string, password: string) => {
-    const response = await axios.post("/api/auth/login", {
+    const response = await apiHelper("post", "api/v1/token", {
       email,
       password,
     });

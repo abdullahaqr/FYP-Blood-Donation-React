@@ -1,7 +1,7 @@
 import { Box, Button, styled } from "@mui/material";
 import FlexBox from "components/FlexBox";
 import SearchInput from "components/SearchInput";
-import UserListColumnShape from "components/userManagement/columnShape";
+import { UserListColumnShape } from "components/userManagement/columnShape";
 import CustomTable from "components/userManagement/CustomTable";
 import { userListFakeData } from "components/userManagement/fakeData";
 import useTitle from "hooks/useTitle";
@@ -40,7 +40,7 @@ const Events: FC = () => {
       </StyledFlexBox>
 
       <CustomTable
-        modalClose={setOpen}
+        setModal={setOpen}
         modalOpen={open}
         columnShape={UserListColumnShape}
         data={userListFakeData}

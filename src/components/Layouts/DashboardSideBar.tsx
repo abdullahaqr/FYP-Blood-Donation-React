@@ -22,11 +22,13 @@ interface SideNavBarProps {
 // custom styled components
 const MainMenu = styled(Box)(({ theme }) => ({
   left: 0,
-  width: 80,
+  width: 100,
   height: "100%",
   position: "fixed",
   boxShadow: theme.shadows[2],
   transition: "left 0.3s ease",
+  overflowX: "hidden",
+  alignItems: "center",
   zIndex: theme.zIndex.drawer + 11,
   backgroundColor: theme.palette.background.paper,
   [theme.breakpoints.down("md")]: { left: -80 },
@@ -72,6 +74,12 @@ const DashboardSideBar: FC<SideNavBarProps> = ({
             <StyledListItemButton
               disableRipple
               onClick={handleActiveMainMenu(nav)}
+              style={{
+                display: "flex",
+                textAlign: "center",
+                flexDirection: "column",
+                marginTop: "1px",
+              }}
             >
               <nav.Icon
                 sx={{
@@ -81,7 +89,6 @@ const DashboardSideBar: FC<SideNavBarProps> = ({
               />
               {/* <div>{nav.title}</div> */}
               <span>{nav.title}</span>
-
             </StyledListItemButton>
           </Tooltip>
         ))}

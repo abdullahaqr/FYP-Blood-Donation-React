@@ -35,7 +35,7 @@ interface CustomTableProps {
   hidePagination?: boolean;
   showFooter?: boolean;
   modalOpen?: boolean;
-  modalClose?: Function;
+  setModal?: Function;
 }
 
 // styled component
@@ -74,7 +74,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     columnShape,
     hidePagination,
     modalOpen,
-    modalClose,
+    setModal,
   } = props;
   const [category, setCategory] = useState("");
   // hooks
@@ -178,7 +178,13 @@ const CustomTable: FC<CustomTableProps> = (props) => {
               return (
                 <TableRow
                   {...row.getRowProps()}
-                  onClick={rowClick && rowClick(row.original)}
+                  onClick={() => {
+                    if (setModal) {
+                      setCategory(row?.values?.name);
+                      setModal(true);
+                    }
+                  }}
+                  // onClick={rowClick && rowClick(row.original)}
                   sx={{
                     backgroundColor: "background.paper",
                     cursor: rowClick ? "pointer" : "unset",
@@ -188,10 +194,16 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                       borderBottomLeftRadius: "8px",
                       borderColor,
                     },
-                    "& td:last-of-type": {
+                    "& MuiTableRow-root": {
                       textAlign: "center",
                       borderRight: "1px solid",
                       borderTopRightRadius: "8px",
+                      borderBottomRightRadius: "8px",
+                      borderColor,
+                    },
+                    "& td:last-of-type": {
+                      borderRight: "1px solid",
+                      borderTopRighttRadius: "8px",
                       borderBottomRightRadius: "8px",
                       borderColor,
                     },
@@ -202,22 +214,49 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                           : `1px solid ${theme.palette.text.secondary} !important`,
                     },
                   }}
+                  // style={{
+                  //   border: "1px solid black",
+                  //   borderRadius: "5px!important",
+                  //   backgroundColor: "blue",
+                  // }}
                 >
-                  {row.cells.map((cell: any) => (
-                    <TableCell
-                      {...cell.getCellProps()}
-                      sx={{
-                        fontSize: 13,
-                        fontWeight: 500,
-                        color: "text.disabled",
-                        borderTop: "1px solid",
-                        borderBottom: "1px solid",
-                        borderColor,
-                      }}
-                    >
-                      {cell.render("Cell")}
-                    </TableCell>
-                  ))}
+                  {row.cells.map((cell: any) => {
+                    return (
+                      <TableCell
+                        {...cell.getCellProps()}
+                        sx={{
+                          fontSize: 13,
+                          fontWeight: 500,
+                          color: "text.disabled",
+                          borderTop: "1px solid",
+                          borderBottom: "1px solid",
+                          borderColor,
+                        }}
+                      >
+                        {Object.keys(row.values).includes(
+                          "blog-categoty-actions"
+                        ) && cell.column.Header == "Actions" ? (
+                          <div
+                            style={{
+                              display: "flex",
+                              justifyContent: "center",
+                            }}
+                          >
+                            <Button
+                              style={{
+                                alignSelf: "center",
+                                backgroundColor: "blue",
+                              }}
+                            >
+                              Edit
+                            </Button>
+                          </div>
+                        ) : (
+                          cell.render("Cell")
+                        )}
+                      </TableCell>
+                    );
+                  })}
                 </TableRow>
               );
             })}
@@ -250,7 +289,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
           </ButtonBase>
         </FlexBox>
       )}
-      {modalOpen && modalClose && (
+      {modalOpen && setModal && (
         <Modal
           open={modalOpen}
           // onClose={handleClose}
@@ -276,7 +315,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
             <Button
               style={style.closeBtn}
               variant="contained"
-              onClick={() => modalClose(false)}
+              onClick={() => setModal(false)}
             >
               Close
             </Button>

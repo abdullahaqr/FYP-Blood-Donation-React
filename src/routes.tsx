@@ -1,7 +1,10 @@
 import GuestGuard from "components/authentication/GuestGuard";
 import DashboardLayout from "components/Layouts/DashboardLayout";
 import LoadingScreen from "components/LoadingScreen";
-import BlogCategory from "pages/Blogs/UserList";
+import BlogCategory from "pages/BlogCategory/BlogCategory";
+import BlogPosts from "pages/BlogPosts/BlogPosts";
+import Events from "pages/Events/Events";
+import Universities from "pages/Universities/Universities";
 import { FC, lazy, LazyExoticComponent, Suspense } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -28,8 +31,8 @@ const DashboardSaaS = Loadable(lazy(() => import("./pages/dashboards/SaaS")));
 const UserProfile = Loadable(lazy(() => import("./pages/UserProfile")));
 
 // user management
-const UserList = Loadable(
-  lazy(() => import("./pages/userManagement/UserList"))
+const DonorList = Loadable(
+  lazy(() => import("./pages/userManagement/DonorList"))
 );
 const UserGrid = Loadable(
   lazy(() => import("./pages/userManagement/UserGrid"))
@@ -89,8 +92,8 @@ const routes = [
       },
 
       {
-        path: "user-list",
-        element: <UserList />,
+        path: "donor-list",
+        element: <DonorList />,
       },
       {
         path: "user-grid",
@@ -103,6 +106,19 @@ const routes = [
       {
         path: "blogs-category",
         element: <BlogCategory />,
+      },
+      
+      {
+        path: "blog-posts",
+        element: <BlogPosts />,
+      },
+      {
+        path: "events",
+        element: <Events />,
+      },
+      {
+        path: "universities",
+        element: <Universities />,
       },
     ],
   },

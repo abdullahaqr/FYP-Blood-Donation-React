@@ -23,20 +23,19 @@ const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
   },
 }));
 
-const BlogCategory: FC = () => {
+const Universities: FC = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
 
   // change navbar title
-  // useTitle("User List");
-  useTitle("Blog Category");
+  useTitle("Universities");
 
   return (
     <Box pt={2} pb={4}>
       <StyledFlexBox>
-        <SearchInput placeholder="Search user..." />
+        <SearchInput placeholder="Search Universities..." />
         <Button variant="contained" onClick={handleOpen}>
-          Add New Category
+          Add New University
         </Button>
       </StyledFlexBox>
 
@@ -50,4 +49,4 @@ const BlogCategory: FC = () => {
   );
 };
 
-export default BlogCategory;
+export default Universities;

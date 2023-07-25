@@ -24,7 +24,7 @@ const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
   },
 }));
 
-const UserList: FC = () => {
+const DonorList: FC = () => {
   // change navbar title
   // useTitle("User List");
   useTitle("Donor List");
@@ -35,9 +35,9 @@ const UserList: FC = () => {
   return (
     <Box pt={2} pb={4}>
       <StyledFlexBox>
-        <SearchInput placeholder="Search user..." />
+        <SearchInput placeholder="Search Donors..." />
         <Button variant="contained" onClick={handleAddUser}>
-          Add New User
+          Add New Donor
         </Button>
       </StyledFlexBox>
 
@@ -46,4 +46,4 @@ const UserList: FC = () => {
   );
 };
 
-export default UserList;
+export default DonorList;

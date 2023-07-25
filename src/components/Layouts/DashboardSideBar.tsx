@@ -79,6 +79,9 @@ const DashboardSideBar: FC<SideNavBarProps> = ({
                     active === nav.title ? "primary.main" : "secondary.400",
                 }}
               />
+              {/* <div>{nav.title}</div> */}
+              <span>{nav.title}</span>
+
             </StyledListItemButton>
           </Tooltip>
         ))}

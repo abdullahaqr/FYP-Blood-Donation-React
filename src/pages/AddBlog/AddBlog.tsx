@@ -53,9 +53,9 @@ const SwitchWrapper = styled(Box)(() => ({
   marginTop: 10,
 }));
 
-const AddNewUser: FC = () => {
+const AddBlog: FC = () => {
   // change navbar title
-  useTitle("Add New User");
+  useTitle("Add New Blog");
 
   const initialValues = {
     fullName: "",
@@ -292,4 +292,4 @@ const AddNewUser: FC = () => {
   );
 };
 
-export default AddNewUser;
+export default AddBlog;

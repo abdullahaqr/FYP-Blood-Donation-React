@@ -23,6 +23,7 @@ interface SideNavBarProps {
 const MainMenu = styled(Box)(({ theme }) => ({
   left: 0,
   width: 100,
+  // width: 150,
   height: "100%",
   position: "fixed",
   boxShadow: theme.shadows[2],
@@ -77,8 +78,12 @@ const DashboardSideBar: FC<SideNavBarProps> = ({
               style={{
                 display: "flex",
                 textAlign: "center",
+                // textAlign: "right",
                 flexDirection: "column",
-                marginTop: "1px",
+                // flexDirection: "row",
+                // marginTop: "1px",
+                // marginLeft: '0px',
+                // marginRight: '3px',
               }}
             >
               <nav.Icon
@@ -88,7 +93,9 @@ const DashboardSideBar: FC<SideNavBarProps> = ({
                 }}
               />
               {/* <div>{nav.title}</div> */}
-              <span>{nav.title}</span>
+              <span style={{
+                fontSize: 10
+              }}>{nav.title}</span>
             </StyledListItemButton>
           </Tooltip>
         ))}

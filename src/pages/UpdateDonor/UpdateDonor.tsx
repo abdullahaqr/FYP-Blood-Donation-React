@@ -1,11 +1,11 @@
-import { Box, Button, styled } from "@mui/material";
+import { Box, styled } from "@mui/material";
 import FlexBox from "components/FlexBox";
 import SearchInput from "components/SearchInput";
-import { UserListColumnShape } from "components/userManagement/columnShape";
-import CustomTable from "components/userManagement/CustomTable";
+import { BlogCategoryList } from "components/userManagement/columnShape";
 import { userListFakeData } from "components/userManagement/fakeData";
 import useTitle from "hooks/useTitle";
 import { FC, useState } from "react";
+import UpdateDonorTable from "./UpdateDonorTable";
 
 // styled component
 const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
@@ -23,30 +23,30 @@ const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
   },
 }));
 
-const BlogPosts: FC = () => {
+const UpdateDonor: FC = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
 
   // change navbar title
-  useTitle("Blog Posts");
+  useTitle("Update Donor");
 
   return (
     <Box pt={2} pb={4}>
       <StyledFlexBox>
-        <SearchInput placeholder="Search Blogs..." />
-        <Button variant="contained" onClick={handleOpen}>
-          Add New Blog Post
-        </Button>
+        <SearchInput placeholder="Search Donor..." />
+        {/* <Button variant="contained" onClick={handleOpen}>
+          Add New Blog Category
+        </Button> */}
       </StyledFlexBox>
 
-      <CustomTable
+      <UpdateDonorTable
         setModal={setOpen}
         modalOpen={open}
-        columnShape={UserListColumnShape}
+        columnShape={BlogCategoryList}
         data={userListFakeData}
       />
     </Box>
   );
 };
 
-export default BlogPosts;
+export default UpdateDonor;

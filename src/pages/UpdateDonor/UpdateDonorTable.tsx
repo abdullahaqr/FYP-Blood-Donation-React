@@ -1,19 +1,18 @@
 import { ArrowRightAlt } from "@mui/icons-material";
+import DriveFolderUploadIcon from '@mui/icons-material/DriveFolderUpload';
 import {
   Box,
-  Button,
   ButtonBase,
-  Modal,
+  IconButton,
   Pagination,
   Stack,
-  styled,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
-  TextField,
-  useTheme,
+  styled,
+  useTheme
 } from "@mui/material";
 import FlexBox from "components/FlexBox";
 import { H5 } from "components/Typography";
@@ -66,7 +65,7 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
   },
 }));
 
-const CustomTable: FC<CustomTableProps> = (props) => {
+const UpdateDonorTable: FC<CustomTableProps> = (props) => {
   const {
     data,
     rowClick,
@@ -241,14 +240,52 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                               justifyContent: "center",
                             }}
                           >
-                            <Button
+                            {/* <Button
+                              // variant="contained"
+                              variant="outlined"
                               style={{
-                                alignSelf: "center",
-                                backgroundColor: "blue",
+                                // alignSelf: "center",
+                                // color: "#fff",
+                                // backgroundColor: "#1976D2",
+                                border: "3px Solid",
                               }}
                             >
-                              Edit
-                            </Button>
+                              Upload
+                            </Button> */}
+                            {/* <Button variant="contained" endIcon={DriveFolderUploadIcon}> */}
+                            {/* <Button variant="contained">
+                              {DriveFolderUploadIcon}
+                            </Button> */}
+                            {/* <label htmlFor="upload-btn" style={{border:"1px solid"}}> */}
+                            <label htmlFor="upload-btn" >
+                              <input
+                                accept="image/*"
+                                id="upload-btn"
+                                type="file"
+                                style={{ display: "none" }}
+                              />
+                              {/* <IconButton component="span"> */}
+                              <IconButton 
+                                component="span"
+                                style={{
+                                  border:"3px solid #1976D2",
+                                  borderRadius: "10px",
+                                  backgroundColor: "#1976D2",
+                                  padding: "7px",
+                                }}
+                              >
+                                <DriveFolderUploadIcon 
+                                sx={{ fontSize: 27, color: "#fff" }}  />
+                                <span 
+                                  style={{
+                                    fontSize:"12px", 
+                                    marginLeft: "5px",
+                                    color: "white",
+                                    fontWeight: "600",
+                                  }}
+                                >Upload PDF</span>
+                              </IconButton>
+                            </label>
                           </div>
                         ) : (
                           cell.render("Cell")
@@ -288,7 +325,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
           </ButtonBase>
         </FlexBox>
       )}
-      {modalOpen && setModal && (
+      {/* {modalOpen && setModal && (
         <Modal
           open={modalOpen}
           // onClose={handleClose}
@@ -320,9 +357,9 @@ const CustomTable: FC<CustomTableProps> = (props) => {
             </Button>
           </Box>
         </Modal>
-      )}
+      )} */}
     </Box>
   );
 };
 
-export default CustomTable;
+export default UpdateDonorTable;

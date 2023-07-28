@@ -1,10 +1,13 @@
 import GuestGuard from "components/authentication/GuestGuard";
 import DashboardLayout from "components/Layouts/DashboardLayout";
 import LoadingScreen from "components/LoadingScreen";
+import AddBlog from "pages/AddBlog/AddBlog";
+import AddEvent from "pages/AddEvent/AddEvent";
 import BlogCategory from "pages/BlogCategory/BlogCategory";
 import BlogPosts from "pages/BlogPosts/BlogPosts";
 import Events from "pages/Events/Events";
 import Universities from "pages/Universities/Universities";
+import UpdateDonor from "pages/UpdateDonor/UpdateDonor";
 import { FC, lazy, LazyExoticComponent, Suspense } from "react";
 import { Navigate } from "react-router-dom";
 
@@ -37,8 +40,8 @@ const DonorList = Loadable(
 const UserGrid = Loadable(
   lazy(() => import("./pages/userManagement/UserGrid"))
 );
-const AddNewUser = Loadable(
-  lazy(() => import("./pages/userManagement/AddNewUser"))
+const AddNewDonor = Loadable(
+  lazy(() => import("./pages/userManagement/AddNewDonor"))
 );
 
 // error
@@ -100,8 +103,12 @@ const routes = [
         element: <UserGrid />,
       },
       {
-        path: "add-user",
-        element: <AddNewUser />,
+        path: "add-donor",
+        element: <AddNewDonor />,
+      },
+      {
+        path: "update-donor",
+        element: <UpdateDonor />,
       },
       {
         path: "blogs-category",
@@ -113,8 +120,16 @@ const routes = [
         element: <BlogPosts />,
       },
       {
+        path: "add-blog",
+        element: <AddBlog />,
+      },
+      {
         path: "events",
         element: <Events />,
+      },
+      {
+        path: "add-event",
+        element: <AddEvent />,
       },
       {
         path: "universities",

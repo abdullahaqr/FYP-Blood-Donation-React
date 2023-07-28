@@ -17,9 +17,14 @@ const index = [
     path: "/dashboard/donor-list",
   },
   {
-    title: "Add user",
+    title: "Add Donor",
     Icon: Icons.AddUserIcon,
-    path: "/dashboard/add-user",
+    path: "/dashboard/add-donor",
+  },
+  {
+    title: "Update Donor",
+    Icon: Icons.ManageAccountsIcon,
+    path: "/dashboard/update-donor",
   },
   {
     title: "Blogs Category",
@@ -32,9 +37,19 @@ const index = [
     path: "/dashboard/blog-posts",
   },
   {
+    title: "Add Blog",
+    Icon: Icons.NoteAddIcon,
+    path: "/dashboard/add-blog",
+  },
+  {
     title: "Events",
     Icon: Icons.EventNoteIcon,
     path: "/dashboard/events",
+  },
+  {
+    title: "Add Event",
+    Icon: Icons.EditCalendarIcon,
+    path: "/dashboard/add-event",
   },
   {
     title: "Universities",

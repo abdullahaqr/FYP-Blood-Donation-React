@@ -30,7 +30,7 @@ const DonorList: FC = () => {
   useTitle("Donor List");
 
   const navigate = useNavigate();
-  const handleAddUser = () => navigate("/dashboard/add-user");
+  const handleAddUser = () => navigate("/dashboard/add-donor");
 
   return (
     <Box pt={2} pb={4}>

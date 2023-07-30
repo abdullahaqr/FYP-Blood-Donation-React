@@ -5,11 +5,9 @@ import {
   Card,
   Checkbox,
   FormControlLabel,
-  FormHelperText
+  FormHelperText,
 } from "@mui/material";
-import {
-  TextFieldWrapper
-} from "components/authentication/StyledComponents";
+import { TextFieldWrapper } from "components/authentication/StyledComponents";
 import FlexBox from "components/FlexBox";
 import LightTextField from "components/LightTextField";
 import { H1, Small } from "components/Typography";
@@ -25,6 +23,9 @@ const Register: FC = () => {
   const navigate = useNavigate();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  // const [name, setName] = useState<string>("");
+  // const [email, setEmail] = useState<string>("");
+  // const [password, setPassword] = useState<string>("");
 
   const initialValues = {
     name: "",
@@ -50,9 +51,23 @@ const Register: FC = () => {
       initialValues,
       validationSchema,
       onSubmit: async (values: any) => {
+        // need to replace any with interface for good practices.
         setLoading(true);
         try {
-          await register(values.email, values.password, values.name);
+          let data = {
+            first_name: values.name,
+            last_name: "Rehan",
+            phone_number: "03122117652",
+            email: values.email,
+            password: values.password,
+            dob: "1997-11-10",
+            gender: "1",
+            university_name: "1",
+            seat_no: "B21110004007",
+            role: "3",
+          };
+          debugger;
+          await register(data);
           setLoading(false);
           toast.success("You registered successfully");
           navigate("/dashboard");

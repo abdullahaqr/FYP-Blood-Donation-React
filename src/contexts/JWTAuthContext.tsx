@@ -111,8 +111,7 @@ const AuthContext = createContext({
   method: "JWT",
   login: (email: string, password: string) => Promise.resolve(),
   logout: () => {},
-  register: (email: string, password: string, username: string) =>
-    Promise.resolve(),
+  register: (data: any) => Promise.resolve(),
 });
 
 // props type
@@ -124,7 +123,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const login = async (email: string, password: string) => {
-    const response = await apiHelper("post", "api/v1/token", {
+    const response = await apiHelper("post", "/token", {
       email,
       password,
     });
@@ -140,20 +139,16 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     });
   };
 
-  const register = async (
-    email: string,
-    username: string,
-    password: string
-  ) => {
-    const response = await axios.post("/api/auth/register", {
-      email,
-      username,
-      password,
+  const register = async (data: any) => {
+    debugger;
+    const response = await apiHelper("post", "/sign-up", {
+      data,
     });
+    debugger;
     // @ts-ignore
     const { accessToken, user } = response.data;
     setSession(accessToken);
-    console.log(response.data);
+    console.log(response?.data);
 
     dispatch({
       type: Types.Register,

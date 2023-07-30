@@ -93,9 +93,13 @@ const DashboardSideBar: FC<SideNavBarProps> = ({
                 }}
               />
               {/* <div>{nav.title}</div> */}
-              <span style={{
-                fontSize: 10
-              }}>{nav.title}</span>
+              <span
+                style={{
+                  fontSize: 10,
+                }}
+              >
+                {nav.title}
+              </span>
             </StyledListItemButton>
           </Tooltip>
         ))}
@@ -134,7 +138,9 @@ const DashboardSideBar: FC<SideNavBarProps> = ({
     );
   }
 
-  return <MainMenu>{mainSideBarContent}</MainMenu>;
+  return (
+    <MainMenu style={{ overflow: "hidden" }}>{mainSideBarContent}</MainMenu>
+  );
 };
 
 export default DashboardSideBar;

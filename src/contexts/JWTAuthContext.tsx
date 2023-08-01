@@ -141,10 +141,10 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const register = async (data: any) => {
     debugger;
-    const response = await apiHelper("post", "/sign-up", {
-      data,
-    });
+    const response: any = await apiHelper("post", "/sign-up", data);
     debugger;
+    // let token = response?.data?.token;
+    // localStorage.setItem("token", token);
     // @ts-ignore
     const { accessToken, user } = response.data;
     setSession(accessToken);

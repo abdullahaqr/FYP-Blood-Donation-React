@@ -3,6 +3,7 @@ import jwtDecode from "jwt-decode";
 import { createContext, ReactNode, useEffect, useReducer } from "react";
 import axios from "utils/axios";
 import apiHelper from "utils/axiosSetup";
+import { endpoint } from "../constants";
 
 // All types
 // =============================================
@@ -123,7 +124,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const login = async (email: string, password: string) => {
-    const response = await apiHelper("post", "/sign-in", {
+    const response = await apiHelper("post", endpoint.signIn, {
       email,
       password,
     });
@@ -145,7 +146,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
 
   const register = async (data: any) => {
     debugger;
-    const response: any = await apiHelper("post", "/sign-up", data);
+    const response: any = await apiHelper("post", endpoint.donorSignUp, data);
     debugger;
     // let token = response?.data?.token;
     // localStorage.setItem("token", token);

@@ -1,7 +1,7 @@
 import useAuth from "hooks/useAuth";
-import Login from "pages/authentication/Login";
-import React, { Fragment, ReactNode, useState } from "react";
+import { Fragment, ReactNode, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
+import { urls } from "../../constants";
 
 // component props interface
 interface AuthGuardProps {
@@ -15,19 +15,20 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     null
   );
 
-  if (!isAuthenticated) {
+  if (localStorage.getItem("accessToken")) {
     if (pathname !== requestedLocation) {
       setRequestedLocation(pathname);
     }
-
-    return <Login />;
+    return <Fragment>{children}</Fragment>;
+  } else {
+    // return <Login />;
+    return <Navigate to={urls.signIn} />;
   }
 
-  if (requestedLocation && pathname !== requestedLocation) {
-    setRequestedLocation(null);
-    return <Navigate to={requestedLocation} />;
-  }
-  return <Fragment>{children}</Fragment>;
+  // if (requestedLocation && pathname !== requestedLocation) {
+  //   setRequestedLocation(null);
+  //   return <Navigate to={requestedLocation} />;
+  // }
 };
 
 export default AuthGuard;

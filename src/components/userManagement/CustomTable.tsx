@@ -173,7 +173,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
           </TableHead>
 
           <TableBody {...getTableBodyProps()}>
-            {page.map((row: any) => {
+            {page?.map((row: any) => {
               prepareRow(row);
               return (
                 <TableRow

@@ -5,16 +5,19 @@ import UkoAvatar from "components/UkoAvatar";
 const UserListColumnShape = [
   {
     Header: "Name",
-    accessor: "name",
+    // accessor: "name",
+    accessor: "first_name",
     minWidth: 200,
     Cell: ({ row }: any) => {
-      const { avatar, name, phone } = row.original;
+      // const { avatar, name, phone } = row.original;
+      const { avatar, first_name, phone_number} = row.original;
       return (
         <FlexBox alignItems="center">
-          <UkoAvatar src={avatar} />
+          {/* <UkoAvatar src={avatar} /> */}
+          <UkoAvatar src={"/static/avatar/001-man.svg"} />
           <FlexBox flexDirection="column" ml={1}>
-            <H6 color="text.primary">{name}</H6>
-            <Tiny color="text.disabled">{phone}</Tiny>
+            <H6 color="text.primary">{first_name}</H6>
+            <Tiny color="text.disabled">{phone_number}</Tiny>
           </FlexBox>
         </FlexBox>
       );
@@ -42,9 +45,14 @@ const UserListColumnShape = [
     accessor: "email",
     minWidth: 150,
   },
+  // {
+  //   Header: "Age",
+  //   accessor: "age",
+  //   minWidth: 150,
+  // },
   {
-    Header: "Age",
-    accessor: "age",
+    Header: "Seat Number",
+    accessor: "seat_no",
     minWidth: 150,
   },
   {
@@ -55,13 +63,19 @@ const UserListColumnShape = [
   },
   {
     Header: "Blood Group",
-    accessor: "bloodGroup",
+    accessor: "blood_group",
     minWidth: 100,
     maxWidth: 100,
   },
+  // {
+  //   Header: "Verified",
+  //   accessor: "verified",
+  //   minWidth: 100,
+  //   maxWidth: 100,
+  // },
   {
-    Header: "Verified",
-    accessor: "verified",
+    Header: "University Name",
+    accessor: "university_name",
     minWidth: 100,
     maxWidth: 100,
   },
@@ -110,3 +124,4 @@ const BlogCategoryList = [
 ];
 
 export { BlogCategoryList, UserListColumnShape };
+

@@ -4,6 +4,7 @@ import {
   Box,
   Button,
   Card,
+  FormControl,
   Grid,
   IconButton,
   InputLabel,
@@ -16,7 +17,9 @@ import { Small } from "components/Typography";
 import { useFormik } from "formik";
 import useTitle from "hooks/useTitle";
 import { FC } from "react";
+import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
+import { endpoint } from "../../constants";
 
 // styled components
 const ButtonWrapper = styled(Box)(({ theme }) => ({
@@ -106,7 +109,26 @@ const AddNewDonor: FC = () => {
   const { values, errors, handleChange, handleSubmit, touched } = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: () => {},
+    onSubmit: () => {
+      // console.log(values)
+      // debugger
+      let data : any = {
+        first_name:"Abdullah",
+        last_name:"Qadeer",
+        phone_number:"03001234567",
+        email:"abd@gmail.com",
+        password:"abd12345",
+        dob:"12-November-2000",
+        gender:"1",
+        university_name:"1",
+        seat_no:"123456",
+        role:"3"
+    }
+      // apiHelper("post", endpoint.donorSignUp, values)
+      apiHelper("post", endpoint.donorSignUp, data)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+    },
   });
 
   return (
@@ -201,6 +223,9 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="firstName"
+                      id="outlined-basic"
+                      label="First Name"
+                      variant="outlined"
                       placeholder="First Name"
                       value={values.firstName}
                       onChange={handleChange}
@@ -222,6 +247,9 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="lastName"
+                      id="outlined-basic"
+                      label="Last Name"
+                      variant="outlined"
                       placeholder="Last Name"
                       value={values.lastName}
                       onChange={handleChange}
@@ -243,6 +271,9 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="email"
+                      id="outlined-basic"
+                      label="Email"
+                      variant="outlined"
                       placeholder="Email Address"
                       value={values.email}
                       onChange={handleChange}
@@ -255,6 +286,9 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="password"
+                      id="outlined-basic"
+                      label="Password"
+                      variant="outlined"
                       placeholder="Password"
                       value={values.password}
                       onChange={handleChange}
@@ -267,6 +301,9 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="seatNumber"
+                      id="outlined-basic"
+                      label="Seat Number"
+                      variant="outlined"
                       placeholder="Seat Number"
                       value={values.seatNumber}
                       onChange={handleChange}
@@ -279,6 +316,9 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="phoneNumber"
+                      id="outlined-basic"
+                      label="Phone"
+                      variant="outlined"
                       placeholder="Phone Number"
                       value={values.phoneNumber}
                       onChange={handleChange}
@@ -297,24 +337,41 @@ const AddNewDonor: FC = () => {
                       error={Boolean(touched.gender && errors.gender)}
                       helperText={touched.gender && errors.gender}
                     /> */}
-                    <InputLabel id="demo-simple-select-label">Gender</InputLabel>
-                      <Select autoWidth
+                    {/* <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                      <Select
                         labelId="demo-simple-select-label"
                         id="demo-simple-select"
                         value={values.gender}
                         label="Gender"
                         onChange={handleChange}
+                        style={{width : "100%"}}
+                      >
+                        <MenuItem key={0} value={"Male"}>Male</MenuItem>
+                        <MenuItem key={1} value={"Female"}>Female</MenuItem>
+                      </Select> */}
+                      <FormControl fullWidth>
+                      <InputLabel id="demo-simple-select-label" style={{color:"#94A4C4",}}>Gender</InputLabel>
+                      <Select
+                        name="gender"
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={values.gender}
+                        label="Age"
+                        onChange={handleChange}
                       >
                         <MenuItem value={10}>Male</MenuItem>
                         <MenuItem value={20}>Female</MenuItem>
-                        {/* <MenuItem value={30}>Thirty</MenuItem> */}
                       </Select>
+                    </FormControl>
                   </Grid>
 
                   <Grid item sm={6} xs={12}>
                     <LightTextField
                       fullWidth
                       name="dob"
+                      id="outlined-basic"
+                      label="Date Of Birth"
+                      variant="outlined"
                       placeholder="Date Of Birth"
                       value={values.dob}
                       onChange={handleChange}
@@ -327,6 +384,9 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="universityName"
+                      id="outlined-basic"
+                      label="University"
+                      variant="outlined"
                       placeholder="University Name"
                       value={values.universityName}
                       onChange={handleChange}

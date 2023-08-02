@@ -18,10 +18,11 @@ const apiHelper = async (
     },
   };
   if (token) {
-    let token = localStorage.getItem("token");
+    let token = localStorage.getItem("accessToken");
+    // debugger
     headersData = {
       headers: {
-        "Access-Control-Allow-Origin": "*",
+        // "Access-Control-Allow-Origin": "*",
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },

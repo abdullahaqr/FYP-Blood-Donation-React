@@ -6,6 +6,9 @@ import {
   Card,
   Grid,
   IconButton,
+  InputLabel,
+  MenuItem,
+  Select,
   styled
 } from "@mui/material";
 import LightTextField from "components/LightTextField";
@@ -285,7 +288,7 @@ const AddNewDonor: FC = () => {
                   </Grid>
 
                   <Grid item sm={6} xs={12}>
-                    <LightTextField
+                    {/* <LightTextField
                       fullWidth
                       name="gender"
                       placeholder="Gender"
@@ -293,7 +296,19 @@ const AddNewDonor: FC = () => {
                       onChange={handleChange}
                       error={Boolean(touched.gender && errors.gender)}
                       helperText={touched.gender && errors.gender}
-                    />
+                    /> */}
+                    <InputLabel id="demo-simple-select-label">Gender</InputLabel>
+                      <Select autoWidth
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        value={values.gender}
+                        label="Gender"
+                        onChange={handleChange}
+                      >
+                        <MenuItem value={10}>Male</MenuItem>
+                        <MenuItem value={20}>Female</MenuItem>
+                        {/* <MenuItem value={30}>Thirty</MenuItem> */}
+                      </Select>
                   </Grid>
 
                   <Grid item sm={6} xs={12}>

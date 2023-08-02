@@ -123,14 +123,18 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [state, dispatch] = useReducer(reducer, initialState);
 
   const login = async (email: string, password: string) => {
-    const response = await apiHelper("post", "/token", {
+    const response = await apiHelper("post", "/sign-in", {
       email,
       password,
     });
+    // debugger;
+    console.log(response?.data);
     //@ts-ignore
-    const { accessToken, user } = response.data;
-
-    setSession(accessToken);
+    // const { accessToken, user } = response.data;
+    // setSession(accessToken);
+    const { access_token, first_name } = response.data;
+    setSession(access_token);
+    let user = first_name; // Need to be handled $
     dispatch({
       type: Types.Login,
       payload: {

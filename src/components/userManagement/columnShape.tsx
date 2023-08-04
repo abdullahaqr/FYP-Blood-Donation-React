@@ -84,17 +84,15 @@ const UserListColumnShape = [
 
 const BlogCategoryList = [
   {
-    Header: "Name",
-    accessor: "name",
+    Header: "Category Name",
+    accessor: "category-name",
     minWidth: 200,
     Cell: ({ row }: any) => {
       const { avatar, name, phone } = row.original;
       return (
         <FlexBox alignItems="center">
-          <UkoAvatar src={avatar} />
           <FlexBox flexDirection="column" ml={1}>
             <H6 color="text.primary">{name}</H6>
-            <Tiny color="text.disabled">{phone}</Tiny>
           </FlexBox>
         </FlexBox>
       );
@@ -124,5 +122,28 @@ const BlogCategoryList = [
   },
 ];
 
-export { BlogCategoryList, UserListColumnShape };
+const GetUniversities = [
+  {
+    Header: "University_Name",
+    accessor: "university-name",
+    minWidth: 200,
+    Cell: ({ row }: any) => {
+      const { avatar, name, phone } = row.original;
+      return (
+        <FlexBox alignItems="center">
+          <FlexBox flexDirection="column" ml={1}>
+            <H6 color="text.primary">{name}</H6>
+          </FlexBox>
+        </FlexBox>
+      );
+    },
+  },
+  {
+    Header: "Actions",
+    accessor: "blog-categoty-actions",
+    minWidth: 150,
+  },
+];
+
+export { BlogCategoryList, GetUniversities, UserListColumnShape };
 

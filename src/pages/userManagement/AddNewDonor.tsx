@@ -17,7 +17,7 @@ import {
 import LightTextField from "components/LightTextField";
 import { useFormik } from "formik";
 import useTitle from "hooks/useTitle";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
 import { endpoint } from "../../constants";
@@ -63,6 +63,15 @@ const AddNewDonor: FC = () => {
   // change navbar title
   useTitle("Add New Donor");
 
+  const [data, setData] = useState<any>([])
+  useEffect(() => {
+    apiHelper("get", endpoint.getUniversities, undefined, true).then((res) => {
+      if (res?.status ==200) {
+        setData(res.data);
+      }
+    })
+  }, [])
+
   const initialValues = {
     // fullName: "",
     // email: "",
@@ -83,6 +92,7 @@ const AddNewDonor: FC = () => {
     gender: "",
     university_name: "",
     seat_no: "",
+    role: "3",
   };
 
   const validationSchema = Yup.object().shape({
@@ -204,7 +214,7 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="first_name"
-                      id="outlined-basic"
+                      id="first_name"
                       label="First Name"
                       variant="outlined"
                       placeholder="First Name"
@@ -228,7 +238,7 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="last_name"
-                      id="outlined-basic"
+                      id="last_name"
                       label="Last Name"
                       variant="outlined"
                       placeholder="Last Name"
@@ -252,7 +262,7 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="email"
-                      id="outlined-basic"
+                      id="email"
                       label="Email"
                       variant="outlined"
                       placeholder="Email Address"
@@ -321,7 +331,7 @@ const AddNewDonor: FC = () => {
                     <LightTextField
                       fullWidth
                       name="dob"
-                      id="outlined-basic"
+                      id="dob"
                       label="Date Of Birth"
                       variant="outlined"
                       placeholder="Date Of Birth"
@@ -380,7 +390,7 @@ const AddNewDonor: FC = () => {
                       // }}
                       >
                       <InputLabel
-                        id="demo-simple-select-label" 
+                        id="gender-label" 
                         style={{
                           color:"#94A4C4",
                           fontWeight: 500,
@@ -389,10 +399,10 @@ const AddNewDonor: FC = () => {
                       </InputLabel>
                       <Select
                         name="gender"
-                        labelId="demo-simple-select-label"
-                        id="demo-simple-select"
+                        labelId="gender-label"
+                        id="gender"
                         value={values.gender}
-                        label="Age"
+                        label="gender"
                         onChange={handleChange}
                         style={{
                           borderRadius: "8px",
@@ -400,17 +410,51 @@ const AddNewDonor: FC = () => {
                           borderColor:"#E5EAF2"
                         }}
                       >
-                        <MenuItem value={"Male"} style={{border: "2px", borderColor:"#E5EAF2"}}>Male</MenuItem>
-                        <MenuItem value={"Female"} style={{border: "2px", borderColor:"#E5EAF2"}}>Female</MenuItem>
+                        <MenuItem value={"1"} style={{border: "2px", borderColor:"#E5EAF2"}}>Male</MenuItem>
+                        <MenuItem value={"2"} style={{border: "2px", borderColor:"#E5EAF2"}}>Female</MenuItem>
                       </Select>
+                      
+                      </FormControl>
+                    </Grid>
+                    
+                    <Grid item sm={6} xs={12}>
+                    <FormControl fullWidth>
+                        <InputLabel
+                            id="university-label"
+                            style={{
+                              color: "#94A4C4",
+                              fontWeight: 500,
+                            }}
+                          >
+                            University
+                          </InputLabel>
+                          <Select
+                            name="university_name"
+                            labelId="university_name"
+                            id="university_name"
+                            value={values.university_name} // Use the correct state variable here
+                            label="University"
+                            onChange={handleChange}
+                            style={{
+                              borderRadius: "8px",
+                              borderColor: "#E5EAF2"
+                            }}
+                          >
+                            {data.map((university: any) => (
+                              <MenuItem key={university.id} value={university.id}>
+                                {university.name}
+                              </MenuItem>
+                            ))}
+                          </Select>
                     </FormControl>
+                    
                   </Grid>
                   
                   <Grid item sm={6} xs={12}>
                     <LightTextField
                       fullWidth
                       name="seat_no"
-                      id="outlined-basic"
+                      id="seat_no"
                       label="Seat Number"
                       variant="outlined"
                       placeholder="Seat Number"
@@ -420,30 +464,12 @@ const AddNewDonor: FC = () => {
                       helperText={touched.seat_no && errors.seat_no}
                     />
                   </Grid>
-                  
-                  <Grid item sm={6} xs={12}>
-                    <LightTextField
-                      fullWidth
-                      name="university_name"
-                      id="outlined-basic"
-                      label="University"
-                      variant="outlined"
-                      placeholder="University Name"
-                      value={values.university_name}
-                      onChange={handleChange}
-                      error={Boolean(touched.university_name && errors.university_name)}
-                      helperText={touched.university_name && errors.university_name}
-                      sx={{
-                        "& .MuiOutlinedInput-root textarea": { padding: 0 },
-                      }}
-                    />
-                  </Grid>
 
                   <Grid item sm={6} xs={12}>
                     <LightTextField
                       fullWidth
                       name="phone_number"
-                      id="outlined-basic"
+                      id="phone_number"
                       label="Phone"
                       variant="outlined"
                       placeholder="Phone Number"

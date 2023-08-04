@@ -8,7 +8,9 @@ export const endpoint = {
   donorSignUp: "/sign-up",
   getDonors : "/list_donors",
   getUniversities : "/university",
-  getCategories : "/category"
+  getCategories : "/category",
+  getAllPost : "/post",
+  getAllEvents : "/event"
 };
 
 export const urls = {

@@ -10,14 +10,15 @@ const UserListColumnShape = [
     minWidth: 200,
     Cell: ({ row }: any) => {
       // const { avatar, name, phone } = row.original;
-      const { avatar, first_name, phone_number} = row.original;
+      const { avatar, first_name, last_name ,phone_number, seat_no} = row.original;
       return (
         <FlexBox alignItems="center">
           {/* <UkoAvatar src={avatar} /> */}
           <UkoAvatar src={"/static/avatar/001-man.svg"} />
           <FlexBox flexDirection="column" ml={1}>
-            <H6 color="text.primary">{first_name}</H6>
-            <Tiny color="text.disabled">{phone_number}</Tiny>
+            <H6 color="text.primary">{first_name + " "+ last_name}</H6>
+            {/* <Tiny color="text.disabled">{phone_number}</Tiny> */}
+            <Tiny color="text.disabled">{seat_no}</Tiny>
           </FlexBox>
         </FlexBox>
       );
@@ -51,8 +52,8 @@ const UserListColumnShape = [
   //   minWidth: 150,
   // },
   {
-    Header: "Seat Number",
-    accessor: "seat_no",
+    Header: "Phone Number",
+    accessor: "phone_number",
     minWidth: 150,
   },
   {
@@ -61,12 +62,12 @@ const UserListColumnShape = [
     minWidth: 100,
     maxWidth: 100,
   },
-  {
-    Header: "Blood Group",
-    accessor: "blood_group",
-    minWidth: 100,
-    maxWidth: 100,
-  },
+  // {
+  //   Header: "Blood Group",
+  //   accessor: "blood_group",
+  //   minWidth: 100,
+  //   maxWidth: 100,
+  // },
   // {
   //   Header: "Verified",
   //   accessor: "verified",

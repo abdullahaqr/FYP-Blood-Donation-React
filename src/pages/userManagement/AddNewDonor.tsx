@@ -18,9 +18,10 @@ import LightTextField from "components/LightTextField";
 import { useFormik } from "formik";
 import useTitle from "hooks/useTitle";
 import { FC, useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
-import { endpoint } from "../../constants";
+import { endpoint, urls } from "../../constants";
 
 // styled components
 const ButtonWrapper = styled(Box)(({ theme }) => ({
@@ -61,12 +62,14 @@ const SwitchWrapper = styled(Box)(() => ({
 
 const AddNewDonor: FC = () => {
   // change navbar title
-  useTitle("Add New Donor");
+  const url = window.location.href
+  let urlEdit = url.includes(urls.editDonor);
+  useTitle(urlEdit ? "Edit Donor Details" : "Add New Donor");
 
   const [data, setData] = useState<any>([])
   useEffect(() => {
     apiHelper("get", endpoint.getUniversities, undefined, true).then((res) => {
-      if (res?.status ==200) {
+      if (res?.status == 200) {
         setData(res.data);
       }
     })
@@ -123,23 +126,23 @@ const AddNewDonor: FC = () => {
     onSubmit: () => {
       debugger
       console.log(values)
-    //   let data : any = {
-    //     first_name:"Abdullah",
-    //     last_name:"Qadeer",
-    //     phone_number:"03001234567",
-    //     email:"abd@gmail.com",
-    //     password:"abd12345",
-    //     // dob:"12-November-2000",
-    //     dob:"1997-10-11",
-    //     gender:"1",
-    //     university_name:"1",
-    //     seat_no:"123456",
-    //     role:"3"
-    // }
-    // apiHelper("post", endpoint.donorSignUp, data)
-    apiHelper("post", endpoint.donorSignUp, values)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+      //   let data : any = {
+      //     first_name:"Abdullah",
+      //     last_name:"Qadeer",
+      //     phone_number:"03001234567",
+      //     email:"abd@gmail.com",
+      //     password:"abd12345",
+      //     // dob:"12-November-2000",
+      //     dob:"1997-10-11",
+      //     gender:"1",
+      //     university_name:"1",
+      //     seat_no:"123456",
+      //     role:"3"
+      // }
+      // apiHelper("post", endpoint.donorSignUp, data)
+      apiHelper("post", endpoint.donorSignUp, values)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
     },
   });
 
@@ -151,8 +154,14 @@ const AddNewDonor: FC = () => {
     event.preventDefault();
   };
 
-  const [dateValue, setDateValue] = useState("");
-
+  const [dateValue, setDateValue] = useState();
+  const params = useParams();
+  const { id } = params;
+  // `${url.editDonor}/${id}`
+  useEffect(() => {
+    // let res = apiHelper(id)
+    console.log(id, "??????")
+  }, [])
   return (
     <Box pt={2} pb={4}>
       <Card sx={{ padding: 4 }}>
@@ -198,6 +207,9 @@ const AddNewDonor: FC = () => {
           </Grid> */}
           {/* <Grid item md={8} xs={12}> */}
           <Grid item xs={12}>
+            {urlEdit &&
+              <div style={{ alignSelf: "center" }}>This is</div>
+            }
             <Card sx={{ padding: 3, boxShadow: 2 }}>
               <form onSubmit={handleSubmit}>
                 <Grid container spacing={3}>
@@ -291,39 +303,39 @@ const AddNewDonor: FC = () => {
 
                     {/* <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" fullWidth> */}
                     <FormControl variant="outlined" fullWidth>
-                    {/* color:"#94A4C4" */}
-                    <InputLabel htmlFor="outlined-adornment-password" style={{color:"#ABB7D0", fontWeight: 500,}}>Password</InputLabel> 
-                    <OutlinedInput
-                      name="password"
-                      id="outlined-adornment-password"
-                      label="Password"
-                      type={showPassword ? 'text' : 'password'}
-                      placeholder="Password"
-                      value={values.password}
-                      onChange={handleChange}
-                      error={Boolean(touched.password && errors.password)}
-                      // helperText={touched.password && errors.password}
-                      endAdornment={
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label="toggle password visibility"
-                            onClick={handleClickShowPassword}
-                            onMouseDown={handleMouseDownPassword}
-                            edge="end"
-                          >
-                            {showPassword ? <VisibilityOff /> : <Visibility />}
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                      
-                      style={{
-                        borderRadius: "8px",
-                        // border: "2px solid #E5EAF2",
-                        borderColor:"#E5EAF2",
-                      }}
-                      
-                    />
-                  </FormControl>
+                      {/* color:"#94A4C4" */}
+                      <InputLabel htmlFor="outlined-adornment-password" style={{ color: "#ABB7D0", fontWeight: 500, }}>Password</InputLabel>
+                      <OutlinedInput
+                        name="password"
+                        id="outlined-adornment-password"
+                        label="Password"
+                        type={showPassword ? 'text' : 'password'}
+                        placeholder="Password"
+                        value={values.password}
+                        onChange={handleChange}
+                        error={Boolean(touched.password && errors.password)}
+                        // helperText={touched.password && errors.password}
+                        endAdornment={
+                          <InputAdornment position="end">
+                            <IconButton
+                              aria-label="toggle password visibility"
+                              onClick={handleClickShowPassword}
+                              onMouseDown={handleMouseDownPassword}
+                              edge="end"
+                            >
+                              {showPassword ? <VisibilityOff /> : <Visibility />}
+                            </IconButton>
+                          </InputAdornment>
+                        }
+
+                        style={{
+                          borderRadius: "8px",
+                          // border: "2px solid #E5EAF2",
+                          borderColor: "#E5EAF2",
+                        }}
+
+                      />
+                    </FormControl>
                   </Grid>
 
 
@@ -341,12 +353,14 @@ const AddNewDonor: FC = () => {
                       helperText={touched.dob && errors.dob}
                     />
 
-                    {/* <DatePicker label="Uncontrolled picker" />
-                    <DatePicker
-                      label="Controlled picker"
-                      value={dateValue}
+                    {/* <>
+                      <DatePicker label="Uncontrolled picker" />
+                      <DatePicker
+                        label="Controlled picker"
+                        value={"2022-04-23"}
                       onChange={(newValue: string) => setDateValue(newValue)}
-                    /> */}
+                      />
+                    </> */}
 
                     {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
                       <DemoContainer components={['DatePicker', 'DatePicker']}>
@@ -382,17 +396,17 @@ const AddNewDonor: FC = () => {
                       <MenuItem key={0} value={"Male"}>Male</MenuItem>
                       <MenuItem key={1} value={"Female"}>Female</MenuItem>
                     </Select> */}
-                      <FormControl fullWidth 
-                      // style={{
-                      //   borderRadius: "8px",
-                      //   border: "2px solid #E5EAF2",
-                      //   borderColor:"#E5EAF2"
-                      // }}
-                      >
+                    <FormControl fullWidth
+                    // style={{
+                    //   borderRadius: "8px",
+                    //   border: "2px solid #E5EAF2",
+                    //   borderColor:"#E5EAF2"
+                    // }}
+                    >
                       <InputLabel
-                        id="gender-label" 
+                        id="gender-label"
                         style={{
-                          color:"#94A4C4",
+                          color: "#94A4C4",
                           fontWeight: 500,
                         }}
                       >Gender
@@ -407,49 +421,49 @@ const AddNewDonor: FC = () => {
                         style={{
                           borderRadius: "8px",
                           // border: "2px solid #E5EAF2",
-                          borderColor:"#E5EAF2"
+                          borderColor: "#E5EAF2"
                         }}
                       >
-                        <MenuItem value={"1"} style={{border: "2px", borderColor:"#E5EAF2"}}>Male</MenuItem>
-                        <MenuItem value={"2"} style={{border: "2px", borderColor:"#E5EAF2"}}>Female</MenuItem>
+                        <MenuItem value={"1"} style={{ border: "2px", borderColor: "#E5EAF2" }}>Male</MenuItem>
+                        <MenuItem value={"2"} style={{ border: "2px", borderColor: "#E5EAF2" }}>Female</MenuItem>
                       </Select>
-                      
-                      </FormControl>
-                    </Grid>
-                    
-                    <Grid item sm={6} xs={12}>
-                    <FormControl fullWidth>
-                        <InputLabel
-                            id="university-label"
-                            style={{
-                              color: "#94A4C4",
-                              fontWeight: 500,
-                            }}
-                          >
-                            University
-                          </InputLabel>
-                          <Select
-                            name="university_name"
-                            labelId="university_name"
-                            id="university_name"
-                            value={values.university_name} // Use the correct state variable here
-                            label="University"
-                            onChange={handleChange}
-                            style={{
-                              borderRadius: "8px",
-                              borderColor: "#E5EAF2"
-                            }}
-                          >
-                            {data.map((university: any) => (
-                              <MenuItem key={university.id} value={university.id}>
-                                {university.name}
-                              </MenuItem>
-                            ))}
-                          </Select>
+
                     </FormControl>
-                    
                   </Grid>
-                  
+
+                  <Grid item sm={6} xs={12}>
+                    <FormControl fullWidth>
+                      <InputLabel
+                        id="university-label"
+                        style={{
+                          color: "#94A4C4",
+                          fontWeight: 500,
+                        }}
+                      >
+                        University
+                      </InputLabel>
+                      <Select
+                        name="university_name"
+                        labelId="university_name"
+                        id="university_name"
+                        value={values.university_name} // Use the correct state variable here
+                        label="University"
+                        onChange={handleChange}
+                        style={{
+                          borderRadius: "8px",
+                          borderColor: "#E5EAF2"
+                        }}
+                      >
+                        {data.map((university: any) => (
+                          <MenuItem key={university.id} value={university.id}>
+                            {university.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
+                    </FormControl>
+
+                  </Grid>
+
                   <Grid item sm={6} xs={12}>
                     <LightTextField
                       fullWidth
@@ -481,10 +495,10 @@ const AddNewDonor: FC = () => {
                   </Grid>
 
 
-                  
+
                   <Grid item container xs={12} justifyContent="flex-end">
                     <Button type="submit" variant="contained">
-                      Create Donor
+                      {urlEdit ? "Edit Donor" : "Create Donor"}
                     </Button>
                   </Grid>
                 </Grid>

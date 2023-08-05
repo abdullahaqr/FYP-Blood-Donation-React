@@ -206,7 +206,7 @@ const BlogCategoryList = [
 
 const GetUniversities = [
   {
-    Header: "University_Name",
+    Header: "University Name",
     accessor: "university-name",
     minWidth: 200,
     Cell: ({ row }: any) => {

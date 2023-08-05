@@ -13,11 +13,11 @@ import { FC, lazy, LazyExoticComponent, Suspense } from "react";
 import { Navigate } from "react-router-dom";
 
 const Loadable = (Component: LazyExoticComponent<FC>) => (props: any) =>
-  (
-    <Suspense fallback={<LoadingScreen />}>
-      <Component {...props} />
-    </Suspense>
-  );
+(
+  <Suspense fallback={<LoadingScreen />}>
+    <Component {...props} />
+  </Suspense>
+);
 
 // authentication pages
 const Login = Loadable(lazy(() => import("./pages/authentication/Login")));
@@ -105,6 +105,10 @@ const routes = [
       },
       {
         path: "add-donor",
+        element: <AddNewDonor />,
+      },
+      {
+        path: "edit-donor/:id",
         element: <AddNewDonor />,
       },
       {

@@ -15,4 +15,6 @@ export const endpoint = {
 
 export const urls = {
   signIn: "/login",
+  editDonor: "/edit-donor",
+  
 };

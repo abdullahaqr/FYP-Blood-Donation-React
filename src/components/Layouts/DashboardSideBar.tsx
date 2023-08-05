@@ -11,6 +11,7 @@ import {
 import { FC, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import ScrollBar from "simplebar-react";
+import { urls } from "../../constants";
 import topMenuList from "./topMenuList";
 
 // root component interface
@@ -56,6 +57,9 @@ const DashboardSideBar: FC<SideNavBarProps> = ({
   const downMd = useMediaQuery((theme: Theme) => theme.breakpoints.down("md"));
 
   const handleActiveMainMenu = (menuItem: any) => () => {
+    if (menuItem.path === urls.signIn) {
+      localStorage.removeItem("accessToken");
+    }
     setActive(menuItem.title);
 
     navigate(menuItem.path);

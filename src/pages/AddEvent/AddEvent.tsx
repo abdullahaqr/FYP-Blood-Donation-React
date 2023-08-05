@@ -8,15 +8,18 @@ import {
   IconButton,
   styled
 } from "@mui/material";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import LightTextField from "components/LightTextField";
 import { Small } from "components/Typography";
 import { useFormik } from "formik";
 import useTitle from "hooks/useTitle";
 import { FC, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
 import { endpoint } from "../../constants";
-
+import "./datepicker.css";
 // styled components
 const ButtonWrapper = styled(Box)(({ theme }) => ({
   width: 100,
@@ -59,6 +62,8 @@ const AddEvent: FC = () => {
   useTitle("Add New Event");
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  const [selectedstartDate, setSelectedStartDate] = useState<Date | null>(null);
+  const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
   const initialValues = {
     event_name: "",
     start_date: "",
@@ -74,14 +79,19 @@ const AddEvent: FC = () => {
 
   const validationSchema = Yup.object().shape({
     event_name: Yup.string().required("Name is Required!"),
-    start_date: Yup.string().required("Start Date is Required!"),
     start_time: Yup.string().required("Start Time is Required!"),
-    end_date: Yup.string().required("End Date is Required!"),
     end_time: Yup.string().required("End Time is Required!"),
     city: Yup.string().required("City is Required!"),
     address: Yup.string().required("Address is Required!"),
     content: Yup.string().required("Content is Required!"),
   });
+
+  const formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
 
   const { values, errors, handleChange, handleSubmit, touched } = useFormik({
     initialValues,
@@ -89,17 +99,23 @@ const AddEvent: FC = () => {
     onSubmit: () => {
       const formData = new FormData();
       formData.append("event_name", values.event_name);
-      formData.append("start_date", values.start_date);
-      formData.append("start_time", values.start_time);
-      formData.append("end_date", values.end_date);
-      formData.append("end_time", values.end_time);
+      formData.append("start_time", values.start_time + ':00');
+      formData.append("end_time", values.end_time + ':00');
       formData.append("city", values.city);
       formData.append("address", values.address);
       formData.append("content", values.content);
       formData.append("creator", "1");
 
+      console.log(formData)
       if (selectedImage) {
         formData.append("image_url", selectedImage);
+      }
+      if (selectedstartDate) {
+        formData.append("start_date", formatDate(selectedstartDate));
+      }
+      if (selectedEndDate) {
+        formData.append("end_date", formatDate(selectedEndDate));
+        console.log(selectedEndDate.toISOString())
       }
 
       apiHelper("post", endpoint.getAllEvents, formData)
@@ -115,7 +131,12 @@ const AddEvent: FC = () => {
       setSelectedImage(file);
     }
   };
-
+  const handleStartDateChange = (date: Date | null) => {
+    setSelectedStartDate(date);
+  };
+  const handleEndDateChange = (date: Date | null) => {
+    setSelectedEndDate(date);
+  };
   return (
     <Box pt={2} pb={4}>
       <Card sx={{ padding: 4 }}>
@@ -188,26 +209,25 @@ const AddEvent: FC = () => {
                   </Grid>
 
                   <Grid item sm={6} xs={12}>
-                    <LightTextField
-                      fullWidth
+                    <DatePicker
+                      selected={selectedstartDate}
                       name="start_date"
-                      placeholder="Start Date"
-                      value={values.start_date}
-                      onChange={handleChange}
-                      error={Boolean(touched.start_date && errors.start_date)}
-                      helperText={touched.start_date && errors.start_date}
+                      onChange={handleStartDateChange}
+                      dateFormat="yyyy-dd-MM"
+                      placeholderText="Start Date"
+                      className="custom-datepicker"
                     />
+
                   </Grid>
 
                   <Grid item sm={6} xs={12}>
-                    <LightTextField
-                      fullWidth
+                    <DatePicker
+                      selected={selectedEndDate}
                       name="end_date"
-                      placeholder="End Date"
-                      value={values.end_date}
-                      onChange={handleChange}
-                      error={Boolean(touched.end_date && errors.end_date)}
-                      helperText={touched.end_date && errors.end_date}
+                      onChange={handleEndDateChange}
+                      dateFormat="yyyy-dd-MM"
+                      placeholderText="End Date"
+                      className="custom-datepicker"
                     />
                   </Grid>
 
@@ -215,19 +235,20 @@ const AddEvent: FC = () => {
                     <LightTextField
                       fullWidth
                       name="start_time"
-                      placeholder="Start Time"
+                      placeholder="Start Time (e.g 10:00)"
                       value={values.start_time}
                       onChange={handleChange}
                       error={Boolean(touched.start_time && errors.start_time)}
                       helperText={touched.start_time && errors.start_time}
                     />
+
                   </Grid>
 
                   <Grid item sm={6} xs={12}>
                     <LightTextField
                       fullWidth
                       name="end_time"
-                      placeholder="End Time"
+                      placeholder="End Time (e.g 17:00)"
                       value={values.end_time}
                       onChange={handleChange}
                       error={Boolean(touched.end_time && errors.end_time)}

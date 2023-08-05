@@ -67,13 +67,13 @@ const AddBlog: FC = () => {
   const [data, setData] = useState<any>([])
   useEffect(() => {
     apiHelper("get", endpoint.getCategories, undefined, true).then((res) => {
-      if (res?.status ==200) {
+      if (res?.status == 200) {
         setData(res.data);
       }
     })
   }, [])
 
-  
+
 
   const initialValues = {
     image_url: "",
@@ -100,11 +100,11 @@ const AddBlog: FC = () => {
     initialValues,
     validationSchema,
     onSubmit: () => {
-      
-    console.log(values)
-    apiHelper("post", endpoint.blogPost, values)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+
+      console.log(values)
+      apiHelper("post", endpoint.getAllPost, values)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
     },
   });
 
@@ -131,8 +131,8 @@ const AddBlog: FC = () => {
     <Box pt={2} pb={4}>
       <Card sx={{ padding: 4 }}>
         <Grid container spacing={3}>
-          
-          <Grid item  xs={12}>
+
+          <Grid item xs={12}>
             <Card sx={{ padding: 3, boxShadow: 2 }}>
               <form onSubmit={handleSubmit}>
                 <Grid item xs={12}>
@@ -188,44 +188,44 @@ const AddBlog: FC = () => {
                     />
                   </Grid>
 
-                  <Grid item  xs={12}>
+                  <Grid item xs={12}>
                     <FormControl fullWidth>
-                        <InputLabel
-                            id="category"
-                            style={{
-                              color: "#94A4C4",
-                              fontWeight: 500,
-                            }}
-                          >
-                            Category
-                          </InputLabel>
-                          <Select
-                            name="category"
-                            labelId="category"
-                            id="category_name"
-                            value={values.category} // Use the correct state variable here
-                            label="Category"
-                            onChange={handleChange}
-                            style={{
-                              borderRadius: "8px",
-                              borderColor: "#E5EAF2"
-                            }}
-                          >
-                            {data.map((category: any) => (
-                              <MenuItem key={category.id} value={category.id}>
-                                {category.name}
-                              </MenuItem>
-                            ))}
-                          </Select>
+                      <InputLabel
+                        id="category"
+                        style={{
+                          color: "#94A4C4",
+                          fontWeight: 500,
+                        }}
+                      >
+                        Category
+                      </InputLabel>
+                      <Select
+                        name="category"
+                        labelId="category"
+                        id="category_name"
+                        value={values.category} // Use the correct state variable here
+                        label="Category"
+                        onChange={handleChange}
+                        style={{
+                          borderRadius: "8px",
+                          borderColor: "#E5EAF2"
+                        }}
+                      >
+                        {data.map((category: any) => (
+                          <MenuItem key={category.id} value={category.id}>
+                            {category.name}
+                          </MenuItem>
+                        ))}
+                      </Select>
                     </FormControl>
-                    
+
                   </Grid>
 
                   <Grid item xs={12}>
                     <FormControl fullWidth >
                       <FormLabel>Rich Text Editor</FormLabel>
-                      <ReactQuill value={values.content} onChange={handleChange} 
-                      style={{ height: '300px' }} />
+                      <ReactQuill value={values.content} onChange={handleChange}
+                        style={{ height: '300px' }} />
                     </FormControl>
                   </Grid>
 
@@ -234,7 +234,7 @@ const AddBlog: FC = () => {
                       Add Blog
                     </Button>
                   </Grid>
-                 
+
                 </Grid>
               </form>
             </Card>

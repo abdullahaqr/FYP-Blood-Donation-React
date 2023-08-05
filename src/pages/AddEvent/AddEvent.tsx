@@ -6,15 +6,16 @@ import {
   Card,
   Grid,
   IconButton,
-  styled,
-  Switch,
+  styled
 } from "@mui/material";
 import LightTextField from "components/LightTextField";
-import { Small, Tiny } from "components/Typography";
+import { Small } from "components/Typography";
 import { useFormik } from "formik";
 import useTitle from "hooks/useTitle";
-import { FC } from "react";
+import { FC, useState } from "react";
+import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
+import { endpoint } from "../../constants";
 
 // styled components
 const ButtonWrapper = styled(Box)(({ theme }) => ({
@@ -57,170 +58,180 @@ const AddEvent: FC = () => {
   // change navbar title
   useTitle("Add New Event");
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const initialValues = {
-    fullName: "",
-    email: "",
-    phone: "",
-    country: "",
-    state: "",
+    event_name: "",
+    start_date: "",
+    start_time: "",
+    end_date: "",
+    end_time: "",
     city: "",
     address: "",
-    zip: "",
-    about: "",
+    creator: "1",
+    content: "",
+    image_url: "",
   };
 
   const validationSchema = Yup.object().shape({
-    fullName: Yup.string().required("Name is Required!"),
-    email: Yup.string().email().required("Email is Required!"),
-    phone: Yup.number().min(8).required("Phone is Required!"),
-    country: Yup.string().required("Country is Required!"),
-    state: Yup.string().required("State is Required!"),
+    event_name: Yup.string().required("Name is Required!"),
+    start_date: Yup.string().required("Start Date is Required!"),
+    start_time: Yup.string().required("Start Time is Required!"),
+    end_date: Yup.string().required("End Date is Required!"),
+    end_time: Yup.string().required("End Time is Required!"),
     city: Yup.string().required("City is Required!"),
     address: Yup.string().required("Address is Required!"),
-    zip: Yup.string().required("Zip is Required!"),
-    about: Yup.string().required("About is Required!"),
+    content: Yup.string().required("Content is Required!"),
   });
 
   const { values, errors, handleChange, handleSubmit, touched } = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: () => {},
+    onSubmit: () => {
+      const formData = new FormData();
+      formData.append("event_name", values.event_name);
+      formData.append("start_date", values.start_date);
+      formData.append("start_time", values.start_time);
+      formData.append("end_date", values.end_date);
+      formData.append("end_time", values.end_time);
+      formData.append("city", values.city);
+      formData.append("address", values.address);
+      formData.append("content", values.content);
+      formData.append("creator", "1");
+
+      if (selectedImage) {
+        formData.append("image_url", selectedImage);
+      }
+
+      apiHelper("post", endpoint.getAllEvents, formData)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+
+    },
   });
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+    }
+  };
 
   return (
     <Box pt={2} pb={4}>
       <Card sx={{ padding: 4 }}>
         <Grid container spacing={3}>
-          <Grid item md={4} xs={12}>
-            <Card
-              sx={{
-                padding: 3,
-                boxShadow: 2,
-                minHeight: 400,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <ButtonWrapper>
-                <UploadButton>
-                  <label htmlFor="upload-btn">
-                    <input
-                      accept="image/*"
-                      id="upload-btn"
-                      type="file"
-                      style={{ display: "none" }}
-                    />
-                    <IconButton component="span">
-                      <PhotoCamera sx={{ fontSize: 26, color: "white" }} />
-                    </IconButton>
-                  </label>
-                </UploadButton>
-              </ButtonWrapper>
 
-              <Small
-                marginTop={2}
-                maxWidth={200}
-                lineHeight={1.9}
-                display="block"
-                textAlign="center"
-                color="text.disabled"
-              >
-                Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
-              </Small>
-
-              <Box maxWidth={250} marginTop={5} marginBottom={1}>
-                <SwitchWrapper>
-                  <Small display="block" fontWeight={600}>
-                    Public Profile
-                  </Small>
-                  <Switch defaultChecked />
-                </SwitchWrapper>
-
-                <SwitchWrapper>
-                  <Small display="block" fontWeight={600}>
-                    Banned
-                  </Small>
-                  <Switch defaultChecked />
-                </SwitchWrapper>
-                <Tiny display="block" color="text.disabled" fontWeight={500}>
-                  Apply disable account
-                </Tiny>
-
-                <SwitchWrapper>
-                  <Small display="block" fontWeight={600}>
-                    Email Verified
-                  </Small>
-                  <Switch defaultChecked />
-                </SwitchWrapper>
-                <Tiny display="block" color="text.disabled" fontWeight={500}>
-                  Disabling this will automatically send the user a verification
-                  email
-                </Tiny>
-              </Box>
-            </Card>
-          </Grid>
           <Grid item md={8} xs={12}>
             <Card sx={{ padding: 3, boxShadow: 2 }}>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} encType="multipart/form-data">
+                <Grid item xs={12}>
+                  <Card
+                    sx={{
+                      padding: 3,
+                      minHeight: 200,
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
+                  >
+                    {/* Display the image preview */}
+                    {selectedImage ? (
+                      <img
+                        src={URL.createObjectURL(selectedImage)}
+                        alt="Preview"
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                    ) : (
+                      <ButtonWrapper>
+                        <UploadButton>
+                          <label htmlFor="image_url">
+                            <input
+                              accept="image/*"
+                              id="image_url"
+                              name="image_url"
+                              type="file"
+                              value=""
+                              style={{ display: "none" }}
+                              onChange={handleImageChange} // Call the handleImageChange function on file selection
+                            />
+                            <IconButton component="span">
+                              <PhotoCamera sx={{ fontSize: 26, color: "white" }} />
+                            </IconButton>
+                          </label>
+                        </UploadButton>
+                      </ButtonWrapper>
+                    )}
+
+                    <Small
+                      marginTop={2}
+                      maxWidth={200}
+                      lineHeight={1.9}
+                      display="block"
+                      textAlign="center"
+                      color="text.disabled"
+                    >
+                      Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
+                    </Small>
+                  </Card>
+                </Grid>
                 <Grid container spacing={3}>
-                  <Grid item sm={6} xs={12}>
+                  <Grid item xs={12}>
                     <LightTextField
                       fullWidth
-                      name="fullName"
-                      placeholder="Full Name"
-                      value={values.fullName}
+                      name="event_name"
+                      placeholder="Event Name"
+                      value={values.event_name}
                       onChange={handleChange}
-                      error={Boolean(touched.fullName && errors.fullName)}
-                      helperText={touched.fullName && errors.fullName}
+                      error={Boolean(touched.event_name && errors.event_name)}
+                      helperText={touched.event_name && errors.event_name}
                     />
                   </Grid>
 
                   <Grid item sm={6} xs={12}>
                     <LightTextField
                       fullWidth
-                      name="email"
-                      placeholder="Email Address"
-                      value={values.email}
+                      name="start_date"
+                      placeholder="Start Date"
+                      value={values.start_date}
                       onChange={handleChange}
-                      error={Boolean(touched.email && errors.email)}
-                      helperText={touched.email && errors.email}
+                      error={Boolean(touched.start_date && errors.start_date)}
+                      helperText={touched.start_date && errors.start_date}
                     />
                   </Grid>
 
                   <Grid item sm={6} xs={12}>
                     <LightTextField
                       fullWidth
-                      name="phone"
-                      placeholder="Phone Number"
-                      value={values.phone}
+                      name="end_date"
+                      placeholder="End Date"
+                      value={values.end_date}
                       onChange={handleChange}
-                      error={Boolean(touched.phone && errors.phone)}
-                      helperText={touched.phone && errors.phone}
+                      error={Boolean(touched.end_date && errors.end_date)}
+                      helperText={touched.end_date && errors.end_date}
                     />
                   </Grid>
 
                   <Grid item sm={6} xs={12}>
                     <LightTextField
                       fullWidth
-                      name="country"
-                      placeholder="Country"
-                      value={values.country}
+                      name="start_time"
+                      placeholder="Start Time"
+                      value={values.start_time}
                       onChange={handleChange}
-                      error={Boolean(touched.country && errors.country)}
-                      helperText={touched.country && errors.country}
+                      error={Boolean(touched.start_time && errors.start_time)}
+                      helperText={touched.start_time && errors.start_time}
                     />
                   </Grid>
 
                   <Grid item sm={6} xs={12}>
                     <LightTextField
                       fullWidth
-                      name="state"
-                      placeholder="State/Region"
-                      value={values.state}
+                      name="end_time"
+                      placeholder="End Time"
+                      value={values.end_time}
                       onChange={handleChange}
-                      error={Boolean(touched.state && errors.state)}
-                      helperText={touched.state && errors.state}
+                      error={Boolean(touched.end_time && errors.end_time)}
+                      helperText={touched.end_time && errors.end_time}
                     />
                   </Grid>
 
@@ -248,29 +259,17 @@ const AddEvent: FC = () => {
                     />
                   </Grid>
 
-                  <Grid item sm={6} xs={12}>
-                    <LightTextField
-                      fullWidth
-                      name="zip"
-                      placeholder="Zip/Code"
-                      value={values.zip}
-                      onChange={handleChange}
-                      error={Boolean(touched.zip && errors.zip)}
-                      helperText={touched.zip && errors.zip}
-                    />
-                  </Grid>
-
                   <Grid item xs={12}>
                     <LightTextField
                       multiline
                       fullWidth
                       rows={10}
-                      name="about"
-                      placeholder="About"
-                      value={values.about}
+                      name="content"
+                      placeholder="Content"
+                      value={values.content}
                       onChange={handleChange}
-                      error={Boolean(touched.about && errors.about)}
-                      helperText={touched.about && errors.about}
+                      error={Boolean(touched.content && errors.content)}
+                      helperText={touched.content && errors.content}
                       sx={{
                         "& .MuiOutlinedInput-root textarea": { padding: 0 },
                       }}

@@ -6,7 +6,7 @@ export const THEMES = {
 export const endpoint = {
   signIn: "/sign-in",
   donorSignUp: "/sign-up",
-  blogPost: "/post",
+  // blogPost: "/post",
   getDonors : "/list_donors",
   getUniversities : "/university",
   getCategories : "/category",

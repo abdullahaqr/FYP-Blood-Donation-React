@@ -7,35 +7,48 @@ import BucketIcon from "icons/BucketIcon";
 import EarningIcon from "icons/EarningIcon";
 import PeopleIcon from "icons/PeopleIcon";
 import WindowsLogoIcon from "icons/WindowsLogoIcon";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
+import apiHelper from "utils/axiosSetup";
+import { endpoint } from "../../constants";
 
 const SaaS: FC = () => {
   // change navbar title
   useTitle("Blood Donation");
+  const [data, setData] = useState<any>([])
+
+  useEffect(() => {
+    apiHelper("get", endpoint.getDashboardFacts, undefined, true).then((res) => {
+      if (res?.status === 200) {
+        setData(res.data);
+        console.log(res.data);
+      }
+    })
+  }, [])
+
 
   const theme = useTheme();
 
   const cardList = [
     {
-      price: 574,
+      price: data.event,
       Icon: BucketIcon,
       title: "Events",
       color: theme.palette.primary.main,
     },
     {
-      price: 521,
+      price: data.donation,
       title: "Received Blood",
       Icon: EarningIcon,
       color: theme.palette.primary.purple,
     },
     {
-      price: 684,
+      price: data.Volunteer,
       Icon: WindowsLogoIcon,
       title: "Volunteer",
       color: theme.palette.primary.red,
     },
     {
-      price: 321,
+      price: data.donor,
       Icon: PeopleIcon,
       title: "Donors",
       color: theme.palette.primary.yellow,

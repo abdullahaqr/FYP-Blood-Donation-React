@@ -10,55 +10,52 @@ import {
   InputLabel,
   MenuItem,
   OutlinedInput,
-  Select,
-  alpha,
-  styled
+  Select
 } from "@mui/material";
 import LightTextField from "components/LightTextField";
 import { useFormik } from "formik";
 import useTitle from "hooks/useTitle";
 import { FC, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
 import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
 import { endpoint, urls } from "../../constants";
 
 // styled components
-const ButtonWrapper = styled(Box)(({ theme }) => ({
-  width: 100,
-  height: 100,
-  display: "flex",
-  borderRadius: "50%",
-  alignItems: "center",
-  justifyContent: "center",
-  backgroundColor:
-    theme.palette.mode === "light"
-      ? theme.palette.secondary[200]
-      : alpha(theme.palette.primary[100], 0.1),
-}));
+// const ButtonWrapper = styled(Box)(({ theme }) => ({
+//   width: 100,
+//   height: 100,
+//   display: "flex",
+//   borderRadius: "50%",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   backgroundColor:
+//     theme.palette.mode === "light"
+//       ? theme.palette.secondary[200]
+//       : alpha(theme.palette.primary[100], 0.1),
+// }));
 
-const UploadButton = styled(Box)(({ theme }) => ({
-  width: 50,
-  height: 50,
-  display: "flex",
-  borderRadius: "50%",
-  border: "2px solid",
-  alignItems: "center",
-  justifyContent: "center",
-  borderColor: theme.palette.background.paper,
-  backgroundColor:
-    theme.palette.mode === "light"
-      ? theme.palette.secondary[400]
-      : alpha(theme.palette.background.paper, 0.9),
-}));
+// const UploadButton = styled(Box)(({ theme }) => ({
+//   width: 50,
+//   height: 50,
+//   display: "flex",
+//   borderRadius: "50%",
+//   border: "2px solid",
+//   alignItems: "center",
+//   justifyContent: "center",
+//   borderColor: theme.palette.background.paper,
+//   backgroundColor:
+//     theme.palette.mode === "light"
+//       ? theme.palette.secondary[400]
+//       : alpha(theme.palette.background.paper, 0.9),
+// }));
 
-const SwitchWrapper = styled(Box)(() => ({
-  display: "flex",
-  justifyContent: "space-between",
-  alignItems: "center",
-  width: "100%",
-  marginTop: 10,
-}));
+// const SwitchWrapper = styled(Box)(() => ({
+//   display: "flex",
+//   justifyContent: "space-between",
+//   alignItems: "center",
+//   width: "100%",
+//   marginTop: 10,
+// }));
 
 const AddNewDonor: FC = () => {
   // change navbar title
@@ -69,7 +66,7 @@ const AddNewDonor: FC = () => {
   const [data, setData] = useState<any>([])
   useEffect(() => {
     apiHelper("get", endpoint.getUniversities, undefined, true).then((res) => {
-      if (res?.status == 200) {
+      if (res?.status === 200) {
         setData(res.data);
       }
     })
@@ -154,14 +151,8 @@ const AddNewDonor: FC = () => {
     event.preventDefault();
   };
 
-  const [dateValue, setDateValue] = useState();
-  const params = useParams();
-  const { id } = params;
-  // `${url.editDonor}/${id}`
-  useEffect(() => {
-    // let res = apiHelper(id)
-    console.log(id, "??????")
-  }, [])
+  const [dateValue, setDateValue] = useState("");
+
   return (
     <Box pt={2} pb={4}>
       <Card sx={{ padding: 4 }}>

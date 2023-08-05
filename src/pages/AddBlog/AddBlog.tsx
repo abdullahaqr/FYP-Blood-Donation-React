@@ -79,7 +79,7 @@ const AddBlog: FC = () => {
     image_url: "",
     title: "",
     slug: "",
-    author: "",
+    author: "1",
     category: "",
     content: "",
   };
@@ -99,87 +99,82 @@ const AddBlog: FC = () => {
   const { values, errors, handleChange, handleSubmit, touched } = useFormik({
     initialValues,
     validationSchema,
-    onSubmit: () => {},
+    onSubmit: () => {
+      
+    console.log(values)
+    apiHelper("post", endpoint.blogPost, values)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+    },
   });
 
+  const slugify = (title: string): string => {
+    return title
+      .toLowerCase()
+      .replace(/[^a-zA-Z0-9\s-]/g, '') // Remove special characters
+      .replace(/\s+/g, '-') // Replace spaces with dashes
+      .trim();
+  };
 
+  const [title, setTitle] = useState('');
+  const [slug, setSlug] = useState('');
+  const handleTitleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTitle(event.target.value);
+    setSlug(slugify(event.target.value));
+  };
+  const handleBothChanges = (event: React.ChangeEvent<HTMLInputElement>) => {
+    handleChange(event);
+    handleTitleChange(event);
+  };
 
   return (
     <Box pt={2} pb={4}>
       <Card sx={{ padding: 4 }}>
         <Grid container spacing={3}>
-          <Grid item md={4} xs={12}>
-            <Card
-              sx={{
-                padding: 3,
-                boxShadow: 2,
-                minHeight: 200,
-                display: "flex",
-                flexDirection: "column",
-                alignItems: "center",
-              }}
-            >
-              <ButtonWrapper>
-                <UploadButton>
-                  <label htmlFor="upload-btn">
-                    <input
-                      accept="image/*"
-                      id="upload-btn"
-                      type="file"
-                      style={{ display: "none" }}
-                    />
-                    <IconButton component="span">
-                      <PhotoCamera sx={{ fontSize: 26, color: "white" }} />
-                    </IconButton>
-                  </label>
-                </UploadButton>
-              </ButtonWrapper>
-
-              <Small
-                marginTop={2}
-                maxWidth={200}
-                lineHeight={1.9}
-                display="block"
-                textAlign="center"
-                color="text.disabled"
-              >
-                Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
-              </Small>
-
-              {/* <Box maxWidth={250} marginTop={5} marginBottom={1}>
-                <SwitchWrapper>
-                  <Small display="block" fontWeight={600}>
-                    Public Profile
-                  </Small>
-                  <Switch defaultChecked />
-                </SwitchWrapper>
-
-                <SwitchWrapper>
-                  <Small display="block" fontWeight={600}>
-                    Banned
-                  </Small>
-                  <Switch defaultChecked />
-                </SwitchWrapper>
-                <Tiny display="block" color="text.disabled" fontWeight={500}>
-                  Apply disable account
-                </Tiny>
-
-                <SwitchWrapper>
-                  <Small display="block" fontWeight={600}>
-                    Email Verified
-                  </Small>
-                  <Switch defaultChecked />
-                </SwitchWrapper>
-                <Tiny display="block" color="text.disabled" fontWeight={500}>
-                  Disabling this will automatically send the user a verification
-                  email
-                </Tiny>
-              </Box> */}
-            </Card>
-          </Grid>
-          <Grid item md={8} xs={12}>
+          
+          <Grid item  xs={12}>
             <Card sx={{ padding: 3, boxShadow: 2 }}>
               <form onSubmit={handleSubmit}>
+                <Grid item xs={12}>
+                  <Card
+                    sx={{
+                      padding: 1,
+                      minHeight: 150,
+                      display: "flex",
+                      flexDirection: "column",
+                      marginBottom: 2,
+                      alignItems: "center",
+                    }}
+                  >
+                    <ButtonWrapper>
+                      <UploadButton>
+                        <label htmlFor="upload-btn">
+                          <input
+                            accept="image/*"
+                            id="upload-btn"
+                            type="file"
+                            value={values.image_url}
+                            style={{ display: "none" }}
+                          />
+                          <IconButton component="span">
+                            <PhotoCamera sx={{ fontSize: 26, color: "white" }} />
+                          </IconButton>
+                        </label>
+                      </UploadButton>
+                    </ButtonWrapper>
+
+                    <Small
+                      marginTop={2}
+                      maxWidth={400}
+                      lineHeight={1.9}
+                      display="block"
+                      textAlign="center"
+                      color="text.disabled"
+                    >
+                      Allowed *.jpeg, *.jpg, *.png, *.gif max size of 3.1 MB
+                    </Small>
+                  </Card>
+                </Grid>
                 <Grid container spacing={3}>
                   <Grid item xs={12}>
                     <LightTextField
@@ -236,9 +231,10 @@ const AddBlog: FC = () => {
 
                   <Grid item xs={12}>
                     <Button type="submit" variant="contained" style={{ marginTop: '25px' }} >
-                      Create User
+                      Add Blog
                     </Button>
                   </Grid>
+                 
                 </Grid>
               </form>
             </Card>

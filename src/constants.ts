@@ -6,10 +6,12 @@ export const THEMES = {
 export const endpoint = {
   signIn: "/sign-in",
   donorSignUp: "/sign-up",
+  blogPost: "/post",
   getDonors : "/list_donors",
   getUniversities : "/university",
   getCategories : "/category",
   getAllPost : "/post",
+  getDashboardFacts : "/dashboard",
   getAllEvents : "/event"
 };
 

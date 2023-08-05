@@ -142,7 +142,7 @@ const AddEvent: FC = () => {
       <Card sx={{ padding: 4 }}>
         <Grid container spacing={3}>
 
-          <Grid item md={8} xs={12}>
+          <Grid item xs={12}>
             <Card sx={{ padding: 3, boxShadow: 2 }}>
               <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Grid item xs={12}>
@@ -299,7 +299,7 @@ const AddEvent: FC = () => {
 
                   <Grid item xs={12}>
                     <Button type="submit" variant="contained">
-                      Create User
+                      Create Event
                     </Button>
                   </Grid>
                 </Grid>

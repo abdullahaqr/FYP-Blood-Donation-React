@@ -16,9 +16,13 @@ import LightTextField from "components/LightTextField";
 import { useFormik } from "formik";
 import useTitle from "hooks/useTitle";
 import { FC, useEffect, useState } from "react";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
 import { endpoint, urls } from "../../constants";
+import "../AddEvent/datepicker.css";
+
 
 // styled components
 // const ButtonWrapper = styled(Box)(({ theme }) => ({
@@ -117,31 +121,68 @@ const AddNewDonor: FC = () => {
     seat_no: Yup.string().required("Seat Number is Required!"),
   });
 
+  const formatDate = (date: Date): string => {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  };
+
   const { values, errors, handleChange, handleSubmit, touched } = useFormik({
     initialValues,
     validationSchema,
     onSubmit: () => {
+      // debugger
+      const formData = new FormData();
+      formData.append("first_name", values.first_name);
+      formData.append("last_name", values.last_name);
+      formData.append("phone_number", values.phone_number);
+      formData.append("email", values.email);
+      formData.append("password", values.password);
+      formData.append("gender", values.gender);
+      formData.append("university_name", values.university_name);
+      formData.append("seat_no", values.seat_no);
+
+      // console.log(formData)
+      if (dateValue) {
+        formData.append("dob", formatDate(dateValue));
+      }
       debugger
-      console.log(values)
-      //   let data : any = {
-      //     first_name:"Abdullah",
-      //     last_name:"Qadeer",
-      //     phone_number:"03001234567",
-      //     email:"abd@gmail.com",
-      //     password:"abd12345",
-      //     // dob:"12-November-2000",
-      //     dob:"1997-10-11",
-      //     gender:"1",
-      //     university_name:"1",
-      //     seat_no:"123456",
-      //     role:"3"
-      // }
-      // apiHelper("post", endpoint.donorSignUp, data)
-      apiHelper("post", endpoint.donorSignUp, values)
+      console.log(formData)
+      apiHelper("post", endpoint.donorSignUp, formData)
         .then(res => console.log(res))
         .catch(err => console.log(err))
+
     },
   });
+
+  // const { values, errors, handleChange, handleSubmit, touched } = useFormik({
+  //   initialValues,
+  //   validationSchema,
+  //   onSubmit: () => {
+  //     debugger
+  //     console.log(values)
+  //     //   let data : any = {
+  //     //     first_name:"Abdullah",
+  //     //     last_name:"Qadeer",
+  //     //     phone_number:"03001234567",
+  //     //     email:"abd@gmail.com",
+  //     //     password:"abd12345",
+  //     //     // dob:"12-November-2000",
+  //     //     dob:"1997-10-11",
+  //     //     gender:"1",
+  //     //     university_name:"1",
+  //     //     seat_no:"123456",
+  //     //     role:"3"
+  //     // }
+  //     // apiHelper("post", endpoint.donorSignUp, data)
+  //     apiHelper("post", endpoint.donorSignUp, values)
+  //       .then(res => console.log(res))
+  //       .catch(err => console.log(err))
+  //   },
+  // });
+
+
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -151,7 +192,14 @@ const AddNewDonor: FC = () => {
     event.preventDefault();
   };
 
-  const [dateValue, setDateValue] = useState("");
+  // const [dateValue, setDateValue] = useState("");
+
+  // const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
+  const [dateValue, setDateValue] = useState<Date | null>(null);
+  const handleDateChange = (date: Date | null) => {
+    setDateValue(date);
+  };
+
 
   return (
     <Box pt={2} pb={4}>
@@ -202,7 +250,8 @@ const AddNewDonor: FC = () => {
               <div style={{ alignSelf: "center" }}>This is</div>
             }
             <Card sx={{ padding: 3, boxShadow: 2 }}>
-              <form onSubmit={handleSubmit}>
+              {/* <form onSubmit={handleSubmit}> */}
+              <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Grid container spacing={3}>
                   <Grid item sm={6} xs={12}>
                     {/* <LightTextField
@@ -331,7 +380,7 @@ const AddNewDonor: FC = () => {
 
 
                   <Grid item sm={6} xs={12}>
-                    <LightTextField
+                    {/* <LightTextField
                       fullWidth
                       name="dob"
                       id="dob"
@@ -342,27 +391,20 @@ const AddNewDonor: FC = () => {
                       onChange={handleChange}
                       error={Boolean(touched.dob && errors.dob)}
                       helperText={touched.dob && errors.dob}
+                    /> */}
+
+                    <DatePicker
+                      selected={dateValue}
+                      name="dob"
+                      // id="dob"
+                      // variant="outlined"
+                      // label="Date Of Birth"
+                      onChange={handleDateChange}
+                      // onChange={handleChange}
+                      dateFormat="yyyy-MM-dd"
+                      placeholderText="Date Of Birth"
+                      className="custom-datepicker"
                     />
-
-                    {/* <>
-                      <DatePicker label="Uncontrolled picker" />
-                      <DatePicker
-                        label="Controlled picker"
-                        value={"2022-04-23"}
-                      onChange={(newValue: string) => setDateValue(newValue)}
-                      />
-                    </> */}
-
-                    {/* <LocalizationProvider dateAdapter={AdapterDayjs}>
-                      <DemoContainer components={['DatePicker', 'DatePicker']}>
-                        <DatePicker label="Uncontrolled picker" defaultValue={dayjs('2022-04-17')} />
-                        <DatePicker
-                          label="Controlled picker"
-                          value={value}
-                          onChange={(newValue) => setValue(newValue)}
-                        />
-                      </DemoContainer>
-                    </LocalizationProvider> */}
 
                   </Grid>
                   <Grid item sm={6} xs={12}>

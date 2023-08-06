@@ -7,16 +7,18 @@ export const endpoint = {
   signIn: "/sign-in",
   donorSignUp: "/sign-up",
   blogPost: "/post",
-  getDonors : "/list_donors",
-  getUniversities : "/university",
-  getCategories : "/category",
-  getAllPost : "/post",
-  getDashboardFacts : "/dashboard",
-  getAllEvents : "/event"
+  getDonors: "/list_donors",
+  getUniversities: "/university",
+  getCategories: "/category",
+  getAllPost: "/post",
+  getDashboardFacts: "/dashboard",
+  getAllEvents: "/event",
 };
 
 export const urls = {
   signIn: "/login",
   editDonor: "/edit-donor",
-  
+  donorList: "/dashboard/donor-list",
+  eventList: "/dashboard/events",
+  blogList: "/dashboard/blog-posts",
 };

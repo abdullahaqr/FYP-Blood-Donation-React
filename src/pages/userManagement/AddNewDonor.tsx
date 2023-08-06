@@ -18,11 +18,12 @@ import useTitle from "hooks/useTitle";
 import { FC, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
 import { endpoint, urls } from "../../constants";
 import "../AddEvent/datepicker.css";
-
 
 // styled components
 // const ButtonWrapper = styled(Box)(({ theme }) => ({
@@ -66,6 +67,8 @@ const AddNewDonor: FC = () => {
   const url = window.location.href
   let urlEdit = url.includes(urls.editDonor);
   useTitle(urlEdit ? "Edit Donor Details" : "Add New Donor");
+
+  let navigate = useNavigate();
 
   const [dateValue, setDateValue] = useState<Date | null>(null);
   const [data, setData] = useState<any>([])
@@ -133,7 +136,6 @@ const AddNewDonor: FC = () => {
     initialValues,
     validationSchema,
     onSubmit: () => {
-      // debugger
       const formData = new FormData();
       formData.append("first_name", values.first_name);
       formData.append("last_name", values.last_name);
@@ -149,8 +151,15 @@ const AddNewDonor: FC = () => {
       if (dateValue) {
         formData.append("dob", formatDate(dateValue));
       }
+      debugger
+      console.log(values)
+      console.log(formData)
       apiHelper("post", endpoint.donorSignUp, formData)
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res)
+          toast.success("New Donor Added Successfully !");
+          navigate(urls.donorList);
+        })
         .catch(err => console.log(err))
 
     },
@@ -489,6 +498,7 @@ const AddNewDonor: FC = () => {
                         }}
                       >
                         {data.map((university: any) => (
+                          // <MenuItem key={university.id} value={university.id.toString()}>
                           <MenuItem key={university.id} value={university.id}>
                             {university.name}
                           </MenuItem>

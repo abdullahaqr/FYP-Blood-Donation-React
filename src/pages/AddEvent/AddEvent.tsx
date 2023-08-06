@@ -16,10 +16,13 @@ import useTitle from "hooks/useTitle";
 import { FC, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
-import { endpoint } from "../../constants";
+import { endpoint, urls } from "../../constants";
 import "./datepicker.css";
+
 // styled components
 const ButtonWrapper = styled(Box)(({ theme }) => ({
   width: 100,
@@ -64,6 +67,8 @@ const AddEvent: FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [selectedstartDate, setSelectedStartDate] = useState<Date | null>(null);
   const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
+  let navigate = useNavigate();
+
   const initialValues = {
     event_name: "",
     start_date: "",
@@ -118,7 +123,11 @@ const AddEvent: FC = () => {
       }
 
       apiHelper("post", endpoint.getAllEvents, formData)
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res)
+          toast.success("New Event Added Successfully !");
+          navigate(urls.eventList);
+        })
         .catch(err => console.log(err))
 
     },

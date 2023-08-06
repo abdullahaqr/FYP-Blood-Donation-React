@@ -18,11 +18,13 @@ import { Small } from "components/Typography";
 import { useFormik } from "formik";
 import useTitle from "hooks/useTitle";
 import { FC, useEffect, useState } from "react";
+import toast from "react-hot-toast";
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css'; // Import the styles
+import { useNavigate } from "react-router-dom";
 import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
-import { endpoint } from "../../constants";
+import { endpoint, urls } from "../../constants";
 
 // styled components
 const ButtonWrapper = styled(Box)(({ theme }) => ({
@@ -75,6 +77,7 @@ const AddBlog: FC = () => {
 
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
+  let navigate = useNavigate();
 
   const initialValues = {
     image_url: "",
@@ -121,7 +124,11 @@ const AddBlog: FC = () => {
       }
 
       apiHelper("post", endpoint.blogPost, formData)
-        .then(res => console.log(res))
+        .then(res => {
+          console.log(res)
+          toast.success("New Blog Added Successfully !");
+          navigate(urls.blogList);
+        })
         .catch(err => console.log(err))
     },
   });

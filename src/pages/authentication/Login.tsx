@@ -16,6 +16,9 @@ import useAuth from "hooks/useAuth";
 import { FC, useState } from "react";
 import toast from "react-hot-toast";
 import { Link, useNavigate } from "react-router-dom";
+// import { toast } from 'react-hot-toast';
+// import { toast, ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 import * as Yup from "yup";
 
 const Login: FC = () => {
@@ -50,7 +53,18 @@ const Login: FC = () => {
         login(values.email, values.password)
           .then(() => {
             setLoading(false);
-            toast.success("You Logged In Successfully test");
+            toast.success("You Logged In Successfully!");
+            // toast.success("You Logged In Successfully test", {
+            //   position: "top-center",
+            //   autoClose: 1500,
+            //   hideProgressBar: false,
+            //   closeOnClick: true,
+            //   pauseOnHover: false,
+            //   draggable: false,
+            //   progress: undefined,
+            //   theme: "light",
+            // });
+            // <ToastContainer />
             navigate("/dashboard");
           })
           .catch((error) => {

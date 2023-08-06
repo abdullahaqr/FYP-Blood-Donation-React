@@ -67,6 +67,7 @@ const AddNewDonor: FC = () => {
   let urlEdit = url.includes(urls.editDonor);
   useTitle(urlEdit ? "Edit Donor Details" : "Add New Donor");
 
+  const [dateValue, setDateValue] = useState<Date | null>(null);
   const [data, setData] = useState<any>([])
   useEffect(() => {
     apiHelper("get", endpoint.getUniversities, undefined, true).then((res) => {
@@ -115,7 +116,7 @@ const AddNewDonor: FC = () => {
     phone_number: Yup.number().min(8).required("Phone is Required!"),
     email: Yup.string().email().required("Email is Required!"),
     password: Yup.string().required("Password is Required!"),
-    dob: Yup.string().required("Date Of Birth is Required!"),
+    // dob: Yup.string().required("Date Of Birth is Required!"),
     gender: Yup.string().required("Gender is Required!"),
     university_name: Yup.string().required("University Name is Required!"),
     seat_no: Yup.string().required("Seat Number is Required!"),
@@ -142,13 +143,12 @@ const AddNewDonor: FC = () => {
       formData.append("gender", values.gender);
       formData.append("university_name", values.university_name);
       formData.append("seat_no", values.seat_no);
+      formData.append("token", "false");
+      formData.append("role", "3");
 
-      // console.log(formData)
       if (dateValue) {
         formData.append("dob", formatDate(dateValue));
       }
-      debugger
-      console.log(formData)
       apiHelper("post", endpoint.donorSignUp, formData)
         .then(res => console.log(res))
         .catch(err => console.log(err))
@@ -195,7 +195,6 @@ const AddNewDonor: FC = () => {
   // const [dateValue, setDateValue] = useState("");
 
   // const [selectedEndDate, setSelectedEndDate] = useState<Date | null>(null);
-  const [dateValue, setDateValue] = useState<Date | null>(null);
   const handleDateChange = (date: Date | null) => {
     setDateValue(date);
   };
@@ -401,7 +400,9 @@ const AddNewDonor: FC = () => {
                       // label="Date Of Birth"
                       onChange={handleDateChange}
                       // onChange={handleChange}
-                      dateFormat="yyyy-MM-dd"
+                      showYearDropdown
+                      dropdownMode="select"
+                      dateFormat="yyyy-dd-MM"
                       placeholderText="Date Of Birth"
                       className="custom-datepicker"
                     />

@@ -102,7 +102,7 @@ const AddBlog: FC = () => {
     onSubmit: () => {
 
       console.log(values)
-      apiHelper("post", endpoint.getAllPost, values)
+      apiHelper("post", endpoint.blogPost, values)
         .then(res => console.log(res))
         .catch(err => console.log(err))
     },
@@ -235,13 +235,13 @@ const AddBlog: FC = () => {
                     </Button>
                   </Grid>
 
-                </Grid>
-              </form>
-            </Card>
-          </Grid>
-        </Grid>
-      </Card>
-    </Box>
+                </Grid >
+              </form >
+            </Card >
+          </Grid >
+        </Grid >
+      </Card >
+    </Box >
   );
 };
 

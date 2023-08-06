@@ -115,7 +115,6 @@ const AddEvent: FC = () => {
       }
       if (selectedEndDate) {
         formData.append("end_date", formatDate(selectedEndDate));
-        console.log(selectedEndDate.toISOString())
       }
 
       apiHelper("post", endpoint.getAllEvents, formData)

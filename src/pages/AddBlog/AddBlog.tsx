@@ -74,6 +74,7 @@ const AddBlog: FC = () => {
   }, [])
 
 
+  const [selectedImage, setSelectedImage] = useState<File | null>(null);
 
   const initialValues = {
     image_url: "",
@@ -86,8 +87,8 @@ const AddBlog: FC = () => {
 
   const validationSchema = Yup.object().shape({
     title: Yup.string().required("Title is Required!"),
-    category: Yup.string().email().required("Please Select Category"),
-    content: Yup.number().min(8).required("Content is Required!"),
+    // category: Yup.string().email().required("Please Select Category"),
+    // content: Yup.number().min(8).required("Content is Required!"),
   });
 
   // const [content, setContent] = useState('');
@@ -96,18 +97,6 @@ const AddBlog: FC = () => {
   //   setContent(contentvalue);
   // };
 
-  const { values, errors, handleChange, handleSubmit, touched } = useFormik({
-    initialValues,
-    validationSchema,
-    onSubmit: () => {
-
-      console.log(values)
-      apiHelper("post", endpoint.blogPost, values)
-        .then(res => console.log(res))
-        .catch(err => console.log(err))
-    },
-  });
-
   const slugify = (title: string): string => {
     return title
       .toLowerCase()
@@ -115,6 +104,28 @@ const AddBlog: FC = () => {
       .replace(/\s+/g, '-') // Replace spaces with dashes
       .trim();
   };
+  const { values, errors, handleChange, handleSubmit, touched } = useFormik({
+    initialValues,
+    validationSchema,
+    onSubmit: () => {
+      const formData = new FormData();
+      formData.append("title", values.title);
+      formData.append("slug", slugify(values.title));
+      formData.append("author", '1');
+      formData.append("category", values.category);
+      formData.append("content", content);
+
+      console.log(formData)
+      if (selectedImage) {
+        formData.append("image_url", selectedImage);
+      }
+
+      apiHelper("post", endpoint.blogPost, formData)
+        .then(res => console.log(res))
+        .catch(err => console.log(err))
+    },
+  });
+
 
   const [title, setTitle] = useState('');
   const [slug, setSlug] = useState('');
@@ -126,6 +137,17 @@ const AddBlog: FC = () => {
     handleChange(event);
     handleTitleChange(event);
   };
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) {
+      setSelectedImage(file);
+    }
+  };
+
+  const [content, setContent] = useState<string>('');
+  const handlecontentChange = (value: string) => {
+    setContent(value);
+  };
 
   return (
     <Box pt={2} pb={4}>
@@ -134,7 +156,7 @@ const AddBlog: FC = () => {
 
           <Grid item xs={12}>
             <Card sx={{ padding: 3, boxShadow: 2 }}>
-              <form onSubmit={handleSubmit}>
+              <form onSubmit={handleSubmit} encType="multipart/form-data">
                 <Grid item xs={12}>
                   <Card
                     sx={{
@@ -146,22 +168,33 @@ const AddBlog: FC = () => {
                       alignItems: "center",
                     }}
                   >
-                    <ButtonWrapper>
-                      <UploadButton>
-                        <label htmlFor="upload-btn">
-                          <input
-                            accept="image/*"
-                            id="upload-btn"
-                            type="file"
-                            value={values.image_url}
-                            style={{ display: "none" }}
-                          />
-                          <IconButton component="span">
-                            <PhotoCamera sx={{ fontSize: 26, color: "white" }} />
-                          </IconButton>
-                        </label>
-                      </UploadButton>
-                    </ButtonWrapper>
+                    {/* Display the image preview */}
+                    {selectedImage ? (
+                      <img
+                        src={URL.createObjectURL(selectedImage)}
+                        alt="Preview"
+                        style={{ width: "100%", height: "100%", objectFit: "cover" }}
+                      />
+                    ) : (
+                      <ButtonWrapper>
+                        <UploadButton>
+                          <label htmlFor="image_url">
+                            <input
+                              accept="image/*"
+                              id="image_url"
+                              name="image_url"
+                              type="file"
+                              value=""
+                              style={{ display: "none" }}
+                              onChange={handleImageChange} // Call the handleImageChange function on file selection
+                            />
+                            <IconButton component="span">
+                              <PhotoCamera sx={{ fontSize: 26, color: "white" }} />
+                            </IconButton>
+                          </label>
+                        </UploadButton>
+                      </ButtonWrapper>
+                    )}
 
                     <Small
                       marginTop={2}
@@ -224,7 +257,7 @@ const AddBlog: FC = () => {
                   <Grid item xs={12}>
                     <FormControl fullWidth >
                       <FormLabel>Rich Text Editor</FormLabel>
-                      <ReactQuill value={values.content} onChange={handleChange}
+                      <ReactQuill value={content} onChange={handlecontentChange}
                         style={{ height: '300px' }} />
                     </FormControl>
                   </Grid>

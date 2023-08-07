@@ -1,21 +1,22 @@
-import { ArrowRightAlt } from "@mui/icons-material";
+import { ArrowRightAlt, Edit } from "@mui/icons-material";
 import {
   Box,
   Button,
   ButtonBase,
   Pagination,
   Stack,
-  styled,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  styled,
   useTheme
 } from "@mui/material";
 import FlexBox from "components/FlexBox";
 import { H5 } from "components/Typography";
 import { ChangeEvent, FC, useMemo, useState } from "react";
+
 import {
   useExpanded,
   usePagination,
@@ -34,6 +35,7 @@ interface CustomTableProps {
   showFooter?: boolean;
   modalOpen?: boolean;
   setModal?: Function;
+  onEdit?: (categoryId: number) => void;
 }
 
 // styled component
@@ -64,7 +66,7 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
   },
 }));
 
-const CustomTable: FC<CustomTableProps> = (props) => {
+const CategoryCustomTable: FC<CustomTableProps> = (props) => {
   const {
     data,
     rowClick,
@@ -244,8 +246,13 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                                 alignSelf: "center",
                                 backgroundColor: "blue",
                               }}
+                              onClick={() => {
+                                if (props.onEdit) {
+                                  props.onEdit(row.original.id); // Pass the category ID to the onEdit function
+                                }
+                              }}
                             >
-                              Edit
+                              <Edit /> Edit
                             </Button>
                           </div>
                         ) : (
@@ -290,4 +297,4 @@ const CustomTable: FC<CustomTableProps> = (props) => {
   );
 };
 
-export default CustomTable;
+export default CategoryCustomTable;

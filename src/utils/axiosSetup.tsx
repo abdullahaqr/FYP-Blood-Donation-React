@@ -42,6 +42,12 @@ const apiHelper = async (
       result = response;
       break;
     }
+    case "put": {
+      let response = await axios.put(endpoint, data, headersData);
+      console.log(response);
+      result = response;
+      break;
+    }
   }
   return result;
 };

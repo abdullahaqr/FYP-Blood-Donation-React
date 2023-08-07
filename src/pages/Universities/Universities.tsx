@@ -1,12 +1,22 @@
-import { Box, Button, styled } from "@mui/material";
+import {
+  Box,
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+  TextField,
+  styled,
+} from "@mui/material";
 import FlexBox from "components/FlexBox";
 import SearchInput from "components/SearchInput";
-import CustomTable from "components/userManagement/CustomTable";
 import { GetUniversities } from "components/userManagement/columnShape";
 import useTitle from "hooks/useTitle";
 import { FC, useEffect, useState } from "react";
 import apiHelper from "utils/axiosSetup";
 import { endpoint } from "../../constants";
+import UniversityCustomTable from "./UniversityCustomTable";
 
 // styled component
 const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
@@ -24,9 +34,18 @@ const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
   },
 }));
 
+const ModalContent = styled(DialogContent)(({ theme }) => ({
+  display: "flex",
+  flexDirection: "column",
+  gap: "10px",
+}));
+
 const Universities: FC = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
+  const [editUniversityData, setEditUniversityData] = useState<any>(null);
+  const [universityName, setUniversityName] = useState("");
+  const [universityId, setUniversityId] = useState<any>(null);
 
   // change navbar title
   useTitle("Universities");
@@ -34,11 +53,53 @@ const Universities: FC = () => {
 
   useEffect(() => {
     apiHelper("get", endpoint.getUniversities, undefined, true).then((res) => {
-      if (res?.status ==200) {
+      if (res?.status == 200) {
         setData(res.data);
       }
     })
   }, [])
+
+  const handleUniversityNameChange = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setUniversityName(event.target.value);
+  };
+
+  const handleSubmit = () => {
+
+    const formData = new FormData();
+    formData.append("name", universityName);
+    setOpen(false); // Close the modal after submitting
+
+    apiHelper("put", `${endpoint.getUniversityById}/${universityId}`, formData)
+      .then(res => console.log(res))
+      .catch(err => console.log(err))
+
+    setEditUniversityData(null);
+  };
+
+  // Function to fetch university data by ID
+  const fetchUniversityById = (universityId: number) => {
+
+    apiHelper("get", `${endpoint.getUniversityById}/${universityId}`, undefined, true)
+      .then((res) => {
+        if (res?.status === 200) {
+          const universityData = res.data as { name: string };
+          setEditUniversityData(universityData);
+          setUniversityName(universityData.name);
+          setUniversityId(universityId);
+          setOpen(true); // Open the modal
+        }
+      })
+      .catch((err) => console.log(err));
+    // console.log(universityId)
+  };
+
+  const handleModalClose = () => {
+    setOpen(false);
+    setEditUniversityData(null);
+    setUniversityName("");
+  };
 
   return (
     <Box pt={2} pb={4}>
@@ -49,11 +110,34 @@ const Universities: FC = () => {
         </Button>
       </StyledFlexBox>
 
-      <CustomTable
+      {/* Modal for Adding New Blog University */}
+      <Dialog open={open} onClose={() => setOpen(false)}>
+        <DialogTitle>Add New University</DialogTitle>
+        <ModalContent>
+          <DialogContentText>
+            Enter the name of the new university:
+          </DialogContentText>
+          <TextField
+            label="University Name"
+            variant="outlined"
+            value={universityName}
+            onChange={handleUniversityNameChange}
+          />
+        </ModalContent>
+        <DialogActions>
+          <Button onClick={() => setOpen(false)}>Cancel</Button>
+          <Button onClick={handleSubmit} variant="contained" color="primary">
+            Submit
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <UniversityCustomTable
         setModal={setOpen}
         modalOpen={open}
         columnShape={GetUniversities}
         data={data}
+        onEdit={(universityId: number) => fetchUniversityById(universityId)}
       />
     </Box>
   );

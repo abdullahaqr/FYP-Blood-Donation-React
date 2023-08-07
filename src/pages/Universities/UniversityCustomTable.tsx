@@ -1,21 +1,22 @@
-import { ArrowRightAlt } from "@mui/icons-material";
+import { ArrowRightAlt, Edit } from "@mui/icons-material";
 import {
   Box,
   Button,
   ButtonBase,
   Pagination,
   Stack,
-  styled,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableRow,
+  styled,
   useTheme
 } from "@mui/material";
 import FlexBox from "components/FlexBox";
 import { H5 } from "components/Typography";
 import { ChangeEvent, FC, useMemo, useState } from "react";
+
 import {
   useExpanded,
   usePagination,
@@ -34,6 +35,7 @@ interface CustomTableProps {
   showFooter?: boolean;
   modalOpen?: boolean;
   setModal?: Function;
+  onEdit?: (universityId: number) => void;
 }
 
 // styled component
@@ -64,7 +66,7 @@ const StyledPagination = styled(Pagination)(({ theme }) => ({
   },
 }));
 
-const CustomTable: FC<CustomTableProps> = (props) => {
+const UniversityCustomTable: FC<CustomTableProps> = (props) => {
   const {
     data,
     rowClick,
@@ -74,7 +76,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
     modalOpen,
     setModal,
   } = props;
-  const [category, setCategory] = useState("");
+  const [university, setUniversity] = useState("");
   // hooks
   const theme = useTheme();
   const tableData: any = useMemo(() => data, [data]);
@@ -104,10 +106,10 @@ const CustomTable: FC<CustomTableProps> = (props) => {
   };
   // const handleClose = () => modalClose(false);
   const handleModalChange = (e: any) => {
-    setCategory(e.target.value);
+    setUniversity(e.target.value);
   };
-  const handleAddCategory = () => {
-    setCategory("");
+  const handleAddUniversity = () => {
+    setUniversity("");
   };
 
   // table border color
@@ -178,7 +180,7 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                   {...row.getRowProps()}
                   onClick={() => {
                     if (setModal) {
-                      setCategory(row?.values?.name);
+                      setUniversity(row?.values?.name);
                       setModal(true);
                     }
                   }}
@@ -244,8 +246,13 @@ const CustomTable: FC<CustomTableProps> = (props) => {
                                 alignSelf: "center",
                                 backgroundColor: "blue",
                               }}
+                              onClick={() => {
+                                if (props.onEdit) {
+                                  props.onEdit(row.original.id); // Pass the university ID to the onEdit function
+                                }
+                              }}
                             >
-                              Edit
+                              <Edit /> Edit
                             </Button>
                           </div>
                         ) : (
@@ -290,4 +297,4 @@ const CustomTable: FC<CustomTableProps> = (props) => {
   );
 };
 
-export default CustomTable;
+export default UniversityCustomTable;

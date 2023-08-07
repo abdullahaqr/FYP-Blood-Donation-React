@@ -7,12 +7,14 @@ export const endpoint = {
   signIn: "/sign-in",
   donorSignUp: "/sign-up",
   blogPost: "/post",
-  getDonors: "/list_donors",
-  getUniversities: "/university",
-  getCategories: "/category",
-  getAllPost: "/post",
-  getDashboardFacts: "/dashboard",
-  getAllEvents: "/event",
+  getDonors : "/list_donors",
+  getUniversities : "/university",
+  getCategories : "/category",
+  getAllPost : "/post",
+  getDashboardFacts : "/dashboard",
+  getAllEvents : "/event",
+  getCategoryById: "/category",
+  getUniversityById: "/university",
 };
 
 export const urls = {

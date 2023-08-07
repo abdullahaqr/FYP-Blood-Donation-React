@@ -10,13 +10,13 @@ const UserListColumnShape = [
     minWidth: 200,
     Cell: ({ row }: any) => {
       // const { avatar, name, phone } = row.original;
-      const { avatar, first_name, last_name ,phone_number, seat_no} = row.original;
+      const { avatar, first_name, last_name, phone_number, seat_no } = row.original;
       return (
         <FlexBox alignItems="center">
           {/* <UkoAvatar src={avatar} /> */}
           <UkoAvatar src={"/static/avatar/001-man.svg"} />
           <FlexBox flexDirection="column" ml={1}>
-            <H6 color="text.primary">{first_name + " "+ last_name}</H6>
+            <H6 color="text.primary">{first_name + " " + last_name}</H6>
             {/* <Tiny color="text.disabled">{phone_number}</Tiny> */}
             <Tiny color="text.disabled">{seat_no}</Tiny>
           </FlexBox>
@@ -91,7 +91,7 @@ const PostListColumnShape = [
     minWidth: 700,
     Cell: ({ row }: any) => {
       // const { avatar, name, phone } = row.original;
-      const { avatar, title, category ,status} = row.original;
+      const { avatar, title, category, status } = row.original;
       return (
         <FlexBox alignItems="center">
           {/* <UkoAvatar src={avatar} /> */}
@@ -124,7 +124,7 @@ const EventListColumnShape = [
     minWidth: 300,
     Cell: ({ row }: any) => {
       // const { avatar, name, phone } = row.original;
-      const { avatar, event_name, start_date, end_date, start_time, end_time, city, address , status} = row.original;
+      const { avatar, event_name, start_date, end_date, start_time, end_time, city, address, status } = row.original;
       return (
         <FlexBox alignItems="center">
           {/* <UkoAvatar src={avatar} /> */}

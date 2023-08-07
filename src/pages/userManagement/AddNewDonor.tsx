@@ -145,7 +145,6 @@ const AddNewDonor: FC = () => {
       formData.append("gender", values.gender);
       formData.append("university_name", values.university_name);
       formData.append("seat_no", values.seat_no);
-      formData.append("token", "false");
       formData.append("role", "3");
 
       if (dateValue) {

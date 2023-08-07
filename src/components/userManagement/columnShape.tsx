@@ -80,8 +80,12 @@ const UserListColumnShape = [
     minWidth: 100,
     maxWidth: 100,
   },
+  {
+    Header: "Actions",
+    accessor: "blog-categoty-actions",
+    minWidth: 150,
+  },
 ];
-
 
 const PostListColumnShape = [
   {
@@ -227,5 +231,43 @@ const GetUniversities = [
   },
 ];
 
-export { BlogCategoryList, EventListColumnShape, GetUniversities, PostListColumnShape, UserListColumnShape };
+const UpdateDonorColumnShape = [
+  {
+    Header: "Donor",
+    accessor: "donor",
+    minWidth: 200,
+    Cell: ({ row }: any) => {
+      const { donor } = row.original;
+      return (
+        <FlexBox alignItems="center">
+          <FlexBox flexDirection="column" ml={1}>
+            <H6 color="text.primary">{donor}</H6>
+          </FlexBox>
+        </FlexBox>
+      );
+    },
+  },
+  {
+    Header: "Quantity",
+    accessor: "quantity",
+    minWidth: 150,
+  },
+  {
+    Header: "Blood Group",
+    accessor: "blood_group",
+    minWidth: 150,
+  },
+  {
+    Header: "Hospital",
+    accessor: "hospital_name",
+    minWidth: 150,
+  },
+  {
+    Header: "Actions",
+    accessor: "blog-categoty-actions",
+    minWidth: 150,
+  },
+];
+
+export { BlogCategoryList, EventListColumnShape, GetUniversities, PostListColumnShape, UpdateDonorColumnShape, UserListColumnShape };
 

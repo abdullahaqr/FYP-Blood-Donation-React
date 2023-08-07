@@ -1,10 +1,12 @@
 import { Box, styled } from "@mui/material";
 import FlexBox from "components/FlexBox";
 import SearchInput from "components/SearchInput";
-import { BlogCategoryList } from "components/userManagement/columnShape";
-import { userListFakeData } from "components/userManagement/fakeData";
+// import { BlogCategoryList } from "components/userManagement/columnShape";
+import { UpdateDonorColumnShape } from "components/userManagement/columnShape";
 import useTitle from "hooks/useTitle";
-import { FC, useState } from "react";
+import { FC, useEffect, useState } from "react";
+import apiHelper from "utils/axiosSetup";
+import { endpoint } from "../../constants";
 import UpdateDonorTable from "./UpdateDonorTable";
 
 // styled component
@@ -27,6 +29,17 @@ const UpdateDonor: FC = () => {
   const [open, setOpen] = useState(false);
   const handleOpen = () => setOpen(true);
 
+  const [data, setData] = useState<any>([])
+
+  useEffect(() => {
+    apiHelper("get", endpoint.getDonationsList, undefined, true).then((res) => {
+      if (res?.status == 200) {
+        setData(res.data);
+        console.log(res.data)
+      }
+    })
+  }, [])
+
   // change navbar title
   useTitle("Update Donor");
 
@@ -42,8 +55,8 @@ const UpdateDonor: FC = () => {
       <UpdateDonorTable
         setModal={setOpen}
         modalOpen={open}
-        columnShape={BlogCategoryList}
-        data={userListFakeData}
+        columnShape={UpdateDonorColumnShape}
+        data={data}
       />
     </Box>
   );

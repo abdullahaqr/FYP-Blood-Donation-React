@@ -12,15 +12,14 @@ import { Box, Button, styled } from "@mui/material";
 // } from "@mui/material";
 import FlexBox from "components/FlexBox";
 import SearchInput from "components/SearchInput";
-import CustomTable from "components/userManagement/CustomTable";
-// import DonorListCustomTable from "./DonorListCustomTable";
 import { UserListColumnShape } from "components/userManagement/columnShape";
 import useTitle from "hooks/useTitle";
+// import { FC, useEffect, useState, useHistory } from "react";
 import { FC, useEffect, useState } from "react";
-// import React, { FC, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import apiHelper from "utils/axiosSetup";
-import { endpoint } from "../../constants";
+import { endpoint, urls } from "../../constants";
+import DonorListCustomTable from "./DonorListCustomTable";
 
 // styled component
 const StyledFlexBox = styled(FlexBox)(({ theme }) => ({
@@ -49,17 +48,17 @@ const DonorList: FC = () => {
   // useTitle("User List");
   useTitle("Donor List");
 
-  // const handleOpen = () => setOpen(true);
+  const handleOpen = () => setOpen(true);
 
   const navigate = useNavigate();
   const handleAddUser = () => navigate("/dashboard/add-donor");
 
   const [data, setData] = useState<any>([])
-  // const [open, setOpen] = useState(false);
-  // const [editDonorData, setEditDonorData] = useState<any>(null);
-  // const [donorName, setDonorName] = useState("");
-  // const [donorId, setDonorId] = useState<any>(null);
-
+  const [open, setOpen] = useState(false);
+  const [editDonorData, setEditDonorData] = useState<any>(null);
+  const [donorName, setDonorName] = useState("");
+  const [donorId, setDonorId] = useState<any>(null);
+  // const history = useHistory
   useEffect(() => {
     apiHelper("get", endpoint.getDonors, undefined, true).then((res) => {
       if (res?.status == 200) {
@@ -68,11 +67,12 @@ const DonorList: FC = () => {
     })
   }, [])
 
-  // const handleDonorNameChange = (
-  //   event: React.ChangeEvent<HTMLInputElement>
-  // ) => {
-  //   setDonorName(event.target.value);
-  // };
+  const handleDonorNameChange = (
+    // event: React.ChangeEvent<HTMLInputElement>
+    id: number
+  ) => {
+    navigate(`${urls.editDonor}/${id}`)
+  };
 
   // const handleSubmit = () => {
   //   const formData = new FormData();
@@ -108,6 +108,9 @@ const DonorList: FC = () => {
   //   setDonorName("");
   // };
 
+  const [dateValue, setDateValue] = useState();
+
+
   return (
     <Box pt={2} pb={4}>
       <StyledFlexBox>
@@ -139,15 +142,15 @@ const DonorList: FC = () => {
         </DialogActions>
       </Dialog> */}
 
-      <CustomTable columnShape={UserListColumnShape} data={data} />
-      {/* <DonorListCustomTable
+      {/* <CustomTable columnShape={UserListColumnShape} data={data} /> */}
+      <DonorListCustomTable
         setModal={setOpen}
         modalOpen={open}
         columnShape={UserListColumnShape}
         data={data}
-        onEdit={(donorId: number) => handleDonorNameChange(donorId)}
+        onEdit={handleDonorNameChange}
 
-      /> */}
+      />
     </Box>
   );
 };

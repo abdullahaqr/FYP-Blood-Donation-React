@@ -17,6 +17,13 @@ const apiHelper = async (
       "Content-Type": "application/json",
     },
   };
+  let headersDataForPDF: any = {
+    headers: {
+      // "Access-Control-Allow-Origin": "*",
+      "Content-Type": "multipart/form-data",
+    }
+  }
+
   if (token) {
     let token = localStorage.getItem("accessToken");
     // debugger
@@ -31,6 +38,7 @@ const apiHelper = async (
   let result;
   switch (reqType) {
     case "get": {
+      // debugger
       let response = await axios.get(endpoint, headersData);
       console.log(response);
       result = response;
@@ -44,6 +52,18 @@ const apiHelper = async (
     }
     case "put": {
       let response = await axios.put(endpoint, data, headersData);
+      console.log(response);
+      result = response;
+      break;
+    }
+    case "patch": {
+      let response = await axios.patch(endpoint, data, headersData);
+      console.log(response);
+      result = response;
+      break;
+    }
+    case "pdf": {
+      let response = await axios.put(endpoint, data, headersDataForPDF);
       console.log(response);
       result = response;
       break;

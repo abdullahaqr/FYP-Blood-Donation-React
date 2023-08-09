@@ -17,6 +17,7 @@ import FlexBox from "components/FlexBox";
 import { H5 } from "components/Typography";
 import { ChangeEvent, FC, useMemo, useState } from "react";
 
+// import EditIcon from '@mui/icons-material/Edit';
 import {
   useExpanded,
   usePagination,
@@ -35,7 +36,7 @@ interface CustomTableProps {
   showFooter?: boolean;
   modalOpen?: boolean;
   setModal?: Function;
-  onEdit?: (categoryId: number) => void;
+  onEdit?: Function;
 }
 
 // styled component
@@ -242,9 +243,11 @@ const CategoryCustomTable: FC<CustomTableProps> = (props) => {
                             }}
                           >
                             <Button
+                              variant="contained"
+                              startIcon={<Edit />}
                               style={{
                                 alignSelf: "center",
-                                backgroundColor: "blue",
+                                // backgroundColor: "blue",
                               }}
                               onClick={() => {
                                 if (props.onEdit) {
@@ -252,7 +255,7 @@ const CategoryCustomTable: FC<CustomTableProps> = (props) => {
                                 }
                               }}
                             >
-                              <Edit /> Edit
+                              Edit
                             </Button>
                           </div>
                         ) : (

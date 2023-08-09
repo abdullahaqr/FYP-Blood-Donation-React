@@ -25,6 +25,8 @@ import {
   useTable,
 } from "react-table";
 import ScrollBar from "simplebar-react";
+import apiHelper from "utils/axiosSetup";
+import { endpoint } from "../../constants";
 
 // component props interface
 interface CustomTableProps {
@@ -136,6 +138,36 @@ const UpdateDonorTable: FC<CustomTableProps> = (props) => {
       marginLeft: "1.2rem",
     },
   };
+  // Pdf file upload
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setSelectedFile(file);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (selectedFile) {
+      const formData = new FormData();
+      formData.append("report", selectedFile);
+      // formData.append("donor", data.id); //Put the user Id , figure out how to pass (Rehan)
+      // formData.append("hospital_name", 6); // it should be hard coded bcz there is only 1 hospital (rehan)
+
+      try {
+        const response: any = await apiHelper("post", endpoint.uploadDonorPDF, formData, true);
+        if (response.status === 200) {
+          console.log("PDF uploaded successfully!");
+          // Add any additional logic here, such as displaying a success message
+        }
+      } catch (error) {
+        console.error("Error uploading PDF:", error);
+        // Handle error, show error message, etc.
+      }
+    }
+  };
+
   return (
     <Box>
       <ScrollBar>
@@ -213,9 +245,9 @@ const UpdateDonorTable: FC<CustomTableProps> = (props) => {
                           : `1px solid ${theme.palette.text.secondary} !important`,
                     },
                   }}
-                  // style={{
-                  //   borderRadius: "8px !important",
-                  // }}
+                // style={{
+                //   borderRadius: "8px !important",
+                // }}
                 >
                   {row.cells.map((cell: any) => {
                     return (
@@ -259,26 +291,28 @@ const UpdateDonorTable: FC<CustomTableProps> = (props) => {
                             {/* <label htmlFor="upload-btn" style={{border:"1px solid"}}> */}
                             <label htmlFor="upload-btn" >
                               <input
-                                accept="image/*"
+                                // accept="image/*"
+                                accept=".pdf"
                                 id="upload-btn"
                                 type="file"
                                 style={{ display: "none" }}
+                                onChange={handleFileChange}
                               />
                               {/* <IconButton component="span"> */}
-                              <IconButton 
+                              <IconButton
                                 component="span"
                                 style={{
-                                  border:"3px solid #1976D2",
+                                  border: "3px solid #1976D2",
                                   borderRadius: "10px",
                                   backgroundColor: "#1976D2",
                                   padding: "7px",
                                 }}
                               >
-                                <DriveFolderUploadIcon 
-                                sx={{ fontSize: 27, color: "#fff" }}  />
-                                <span 
+                                <DriveFolderUploadIcon
+                                  sx={{ fontSize: 27, color: "#fff" }} />
+                                <span
                                   style={{
-                                    fontSize:"12px", 
+                                    fontSize: "12px",
                                     marginLeft: "5px",
                                     color: "white",
                                     fontWeight: "600",

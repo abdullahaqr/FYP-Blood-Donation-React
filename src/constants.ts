@@ -16,11 +16,14 @@ export const endpoint = {
   getCategoryById: "/category",
   getUniversityById: "/university",
   getDonationsList: "/donation",
+  getDonorById: "/users",
+  // getHospitalDonorById: "/list_hospital_donors",
+  uploadDonorPDF: "/donation",
 };
 
 export const urls = {
   signIn: "/login",
-  editDonor: "/edit-donor",
+  editDonor: "/dashboard/edit-donor",
   donorList: "/dashboard/donor-list",
   eventList: "/dashboard/events",
   blogList: "/dashboard/blog-posts",

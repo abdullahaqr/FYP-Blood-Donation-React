@@ -137,7 +137,8 @@ const Universities: FC = () => {
         modalOpen={open}
         columnShape={GetUniversities}
         data={data}
-        onEdit={(universityId: number) => fetchUniversityById(universityId)}
+        // onEdit={(universityId: number) => fetchUniversityById(universityId)}
+        onEdit={fetchUniversityById}
       />
     </Box>
   );

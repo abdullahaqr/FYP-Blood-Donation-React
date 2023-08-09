@@ -242,9 +242,11 @@ const UniversityCustomTable: FC<CustomTableProps> = (props) => {
                             }}
                           >
                             <Button
+                              variant="contained"
+                              startIcon={<Edit />}
                               style={{
                                 alignSelf: "center",
-                                backgroundColor: "blue",
+                                // backgroundColor: "blue",
                               }}
                               onClick={() => {
                                 if (props.onEdit) {
@@ -252,7 +254,7 @@ const UniversityCustomTable: FC<CustomTableProps> = (props) => {
                                 }
                               }}
                             >
-                              <Edit /> Edit
+                              Edit
                             </Button>
                           </div>
                         ) : (

@@ -19,7 +19,7 @@ import { FC, useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import toast from "react-hot-toast";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import apiHelper from "utils/axiosSetup";
 import * as Yup from "yup";
 import { endpoint, urls } from "../../constants";
@@ -101,6 +101,8 @@ const AddNewDonor: FC = () => {
     university_name: "",
     seat_no: "",
     role: "3",
+    city: "",
+    address: "",
   };
 
   const validationSchema = Yup.object().shape({
@@ -123,8 +125,11 @@ const AddNewDonor: FC = () => {
     gender: Yup.string().required("Gender is Required!"),
     university_name: Yup.string().required("University Name is Required!"),
     seat_no: Yup.string().required("Seat Number is Required!"),
+    city: Yup.string().required("City is Required!"),
+    address: Yup.string().required("Address is Required!"),
   });
 
+  // const formatDate = (date: any): string => {
   const formatDate = (date: Date): string => {
     const year = date.getFullYear();
     const month = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based, so add 1
@@ -132,7 +137,7 @@ const AddNewDonor: FC = () => {
     return `${year}-${month}-${day}`;
   };
 
-  const { values, errors, handleChange, handleSubmit, touched } = useFormik({
+  const { values, errors, handleChange, handleSubmit, touched, setFieldValue } = useFormik({
     initialValues,
     validationSchema,
     onSubmit: () => {
@@ -150,19 +155,79 @@ const AddNewDonor: FC = () => {
       if (dateValue) {
         formData.append("dob", formatDate(dateValue));
       }
-      debugger
+      if (urlEdit) {
+        formData.append("city", values.city);
+      }
+      if (urlEdit) {
+        formData.append("address", values.address);
+      }
+      // debugger
       console.log(values)
       console.log(formData)
-      apiHelper("post", endpoint.donorSignUp, formData)
-        .then(res => {
-          console.log(res)
-          toast.success("New Donor Added Successfully !");
-          navigate(urls.donorList);
-        })
-        .catch(err => console.log(err))
+      debugger
+      if (urlEdit && id) {
+        //put api here
+        debugger
+        // apiHelper("patch", getApi, formData, true)
+        apiHelper("patch", `${endpoint.getDonorById}/${id}/profile`, formData, true)
+          .then(res => {
+            console.log(res)
+            toast.success("Donor Edited Successfully !");
+            navigate(urls.donorList);
+          })
+          .catch(err => console.log("PATCH API", err))
+      }
+      else {
+        apiHelper("post", endpoint.donorSignUp, formData)
+          .then(res => {
+            console.log(res)
+            toast.success("New Donor Added Successfully !");
+            navigate(urls.donorList);
+          })
+          .catch(err => console.log(err))
 
-    },
+      }
+    }
+
   });
+
+  const params = useParams();
+  const { id } = params;
+  let getApi = `${endpoint.getDonorById}/${id}/profile`
+  useEffect(() => {
+    if (urlEdit && id) {
+      apiHelper("get", getApi, {}, true).then((res: any) => {
+        if (res?.status == 200) {
+          // debugger
+          // const {data : any} = res;
+          setFieldValue("first_name", res?.data?.first_name)
+          setFieldValue("last_name", res?.data?.last_name)
+          setFieldValue("phone_number", res?.data?.phone_number)
+          setFieldValue("email", res?.data?.email)
+          setFieldValue("password", res?.data?.password)
+          if (res?.data?.gender == "Male") {
+            setFieldValue("gender", "1")
+          }
+          if (res?.data?.gender == "Female") {
+            setFieldValue("gender", "2")
+          }
+          if (res?.data?.university_name == 'University of Karachi') {
+            setFieldValue("university_name", 1)
+          }
+          if (res?.data?.university_name == 'Habib University') {
+            setFieldValue("university_name", 3)
+          }
+          // setFieldValue("university_name", res?.data?.university_name)
+          setFieldValue("seat_no", res?.data?.seat_no)
+          setFieldValue("dob", res?.data?.dob)
+          setFieldValue("city", res?.data?.city)
+          setFieldValue("address", res?.data?.address)
+          console.log(res, "!!!!!!!!!!!!!!!!!!")
+        }
+      })
+      console.log(id, "??????")
+    }
+  }, [])
 
   // const { values, errors, handleChange, handleSubmit, touched } = useFormik({
   //   initialValues,
@@ -332,58 +397,47 @@ const AddNewDonor: FC = () => {
                     />
                   </Grid>
 
-                  <Grid item sm={6} xs={12}>
-                    {/* <LightTextField
-                      fullWidth
-                      name="password"
-                      id="outlined-adornment-password"
-                      type="password"
-                      autoComplete="current-password"
-                      label="Password"
-                      variant="outlined"
-                      placeholder="Password"
-                      value={values.password}
-                      onChange={handleChange}
-                      error={Boolean(touched.password && errors.password)}
-                      helperText={touched.password && errors.password}
-                    /> */}
+                  {!urlEdit &&
+                    //  <div style={{ alignSelf: "center" }}>This is</div>
+                    <Grid item sm={6} xs={12}>
+                      {/* <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" fullWidth> */}
+                      <FormControl variant="outlined" fullWidth>
+                        {/* color:"#94A4C4" */}
+                        <InputLabel htmlFor="outlined-adornment-password" style={{ color: "#ABB7D0", fontWeight: 500, }}>Password</InputLabel>
+                        <OutlinedInput
+                          name="password"
+                          id="outlined-adornment-password"
+                          label="Password"
+                          type={showPassword ? 'text' : 'password'}
+                          placeholder="Password"
+                          value={values.password}
+                          onChange={handleChange}
+                          error={Boolean(touched.password && errors.password)}
+                          // helperText={touched.password && errors.password}
+                          endAdornment={
+                            <InputAdornment position="end">
+                              <IconButton
+                                aria-label="toggle password visibility"
+                                onClick={handleClickShowPassword}
+                                onMouseDown={handleMouseDownPassword}
+                                edge="end"
+                              >
+                                {showPassword ? <VisibilityOff /> : <Visibility />}
+                              </IconButton>
+                            </InputAdornment>
+                          }
 
-                    {/* <FormControl sx={{ m: 1, width: '25ch' }} variant="outlined" fullWidth> */}
-                    <FormControl variant="outlined" fullWidth>
-                      {/* color:"#94A4C4" */}
-                      <InputLabel htmlFor="outlined-adornment-password" style={{ color: "#ABB7D0", fontWeight: 500, }}>Password</InputLabel>
-                      <OutlinedInput
-                        name="password"
-                        id="outlined-adornment-password"
-                        label="Password"
-                        type={showPassword ? 'text' : 'password'}
-                        placeholder="Password"
-                        value={values.password}
-                        onChange={handleChange}
-                        error={Boolean(touched.password && errors.password)}
-                        // helperText={touched.password && errors.password}
-                        endAdornment={
-                          <InputAdornment position="end">
-                            <IconButton
-                              aria-label="toggle password visibility"
-                              onClick={handleClickShowPassword}
-                              onMouseDown={handleMouseDownPassword}
-                              edge="end"
-                            >
-                              {showPassword ? <VisibilityOff /> : <Visibility />}
-                            </IconButton>
-                          </InputAdornment>
-                        }
+                          style={{
+                            borderRadius: "8px",
+                            // border: "2px solid #E5EAF2",
+                            borderColor: "#E5EAF2",
+                          }}
 
-                        style={{
-                          borderRadius: "8px",
-                          // border: "2px solid #E5EAF2",
-                          borderColor: "#E5EAF2",
-                        }}
+                        />
+                      </FormControl>
+                    </Grid>
+                  }
 
-                      />
-                    </FormControl>
-                  </Grid>
 
 
                   <Grid item sm={6} xs={12}>
@@ -399,21 +453,67 @@ const AddNewDonor: FC = () => {
                       error={Boolean(touched.dob && errors.dob)}
                       helperText={touched.dob && errors.dob}
                     /> */}
+                    {/* {urlEdit ? dateValue : values.dob} */}
+                    {urlEdit ?
+                      <DatePicker
+                        selected={dateValue}
+                        // selected={urlEdit ? dateValue : values.dob}
+                        // selected={urlEdit ? values.dob : dateValue}
+                        name="dob"
+                        // id="dob"
+                        // variant="outlined"
+                        // label="Date Of Birth"
+                        onChange={handleDateChange}
+                        // {urlEdit &&  value={values.dob} }
+                        value={values.dob}
+                        // value={urlEdit ? values.dob : dateValue}
+                        // value={urlEdit ? formatDate(dateValue) : values.dob}
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="yyyy-dd-MM"
+                        placeholderText="Date Of Birth"
+                        className="custom-datepicker"
+                      /> :
+                      <DatePicker
+                        selected={dateValue}
+                        // selected={urlEdit ? dateValue : values.dob}
+                        // selected={urlEdit ? values.dob : dateValue}
+                        name="dob"
+                        // id="dob"
+                        // variant="outlined"
+                        // label="Date Of Birth"
+                        onChange={handleDateChange}
+                        // {urlEdit &&  value={values.dob} }
+                        // value={values.dob}
+                        // value={urlEdit ? values.dob : dateValue}
+                        // value={urlEdit ? formatDate(dateValue) : values.dob}
+                        showYearDropdown
+                        dropdownMode="select"
+                        dateFormat="yyyy-dd-MM"
+                        placeholderText="Date Of Birth"
+                        className="custom-datepicker"
+                      />
+                    }
 
-                    <DatePicker
+                    {/* <DatePicker
                       selected={dateValue}
+                      // selected={urlEdit ? dateValue : values.dob}
+                      // selected={urlEdit ? values.dob : dateValue}
                       name="dob"
                       // id="dob"
                       // variant="outlined"
                       // label="Date Of Birth"
                       onChange={handleDateChange}
-                      // onChange={handleChange}
+                      // {urlEdit &&  value={values.dob} }
+                      // value={values.dob}
+                      // value={urlEdit ? values.dob : dateValue}
+                      // value={urlEdit ? formatDate(dateValue) : values.dob}
                       showYearDropdown
                       dropdownMode="select"
                       dateFormat="yyyy-dd-MM"
                       placeholderText="Date Of Birth"
                       className="custom-datepicker"
-                    />
+                    /> */}
 
                   </Grid>
                   <Grid item sm={6} xs={12}>
@@ -458,6 +558,7 @@ const AddNewDonor: FC = () => {
                         labelId="gender-label"
                         id="gender"
                         value={values.gender}
+                        // value={"1"}
                         label="gender"
                         onChange={handleChange}
                         style={{
@@ -468,6 +569,8 @@ const AddNewDonor: FC = () => {
                       >
                         <MenuItem value={"1"} style={{ border: "2px", borderColor: "#E5EAF2" }}>Male</MenuItem>
                         <MenuItem value={"2"} style={{ border: "2px", borderColor: "#E5EAF2" }}>Female</MenuItem>
+                        {/* <MenuItem value={"Male"} style={{ border: "2px", borderColor: "#E5EAF2" }}>Male</MenuItem>
+                        <MenuItem value={"Female"} style={{ border: "2px", borderColor: "#E5EAF2" }}>Female</MenuItem> */}
                       </Select>
 
                     </FormControl>
@@ -501,6 +604,9 @@ const AddNewDonor: FC = () => {
                           <MenuItem key={university.id} value={university.id}>
                             {university.name}
                           </MenuItem>
+                          // <MenuItem key={university.id} value={university.name}>
+                          //   {university.name}
+                          // </MenuItem>
                         ))}
                       </Select>
                     </FormControl>
@@ -536,6 +642,40 @@ const AddNewDonor: FC = () => {
                       helperText={touched.phone_number && errors.phone_number}
                     />
                   </Grid>
+
+                  {urlEdit &&
+                    <Grid item sm={6} xs={12}>
+                      <LightTextField
+                        fullWidth
+                        name="city"
+                        id="city"
+                        label="City"
+                        variant="outlined"
+                        placeholder="City"
+                        value={values.city}
+                        onChange={handleChange}
+                        error={Boolean(touched.city && errors.city)}
+                        helperText={touched.city && errors.city}
+                      />
+                    </Grid>
+                  }
+
+                  {urlEdit &&
+                    <Grid item sm={6} xs={12}>
+                      <LightTextField
+                        fullWidth
+                        name="address"
+                        id="address"
+                        label="Address"
+                        variant="outlined"
+                        placeholder="Address"
+                        value={values.address}
+                        onChange={handleChange}
+                        error={Boolean(touched.address && errors.address)}
+                        helperText={touched.address && errors.address}
+                      />
+                    </Grid>
+                  }
 
 
 

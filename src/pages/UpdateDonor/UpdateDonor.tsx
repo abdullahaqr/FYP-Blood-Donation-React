@@ -32,17 +32,18 @@ const UpdateDonor: FC = () => {
   const [data, setData] = useState<any>([])
 
   useEffect(() => {
-    apiHelper("get", endpoint.getDonationsList, undefined, true).then((res) => {
+    // apiHelper("get", endpoint.getDonationsList, undefined, true).then((res) => {
+    apiHelper("get", endpoint.getDonors, undefined, true).then((res) => {
       if (res?.status == 200) {
         setData(res.data);
-        console.log(res.data)
+        console.log("DATA----", res.data)
       }
     })
   }, [])
 
   // change navbar title
   useTitle("Update Donor");
-
+  debugger
   return (
     <Box pt={2} pb={4}>
       <StyledFlexBox>
@@ -51,7 +52,6 @@ const UpdateDonor: FC = () => {
           Add New Blog Category
         </Button> */}
       </StyledFlexBox>
-
       <UpdateDonorTable
         setModal={setOpen}
         modalOpen={open}

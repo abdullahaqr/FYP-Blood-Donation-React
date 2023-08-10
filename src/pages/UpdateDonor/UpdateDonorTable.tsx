@@ -148,12 +148,12 @@ const UpdateDonorTable: FC<CustomTableProps> = (props) => {
     }
   };
 
-  const handleUpload = async () => {
+  const handleUpload = async (donorId: string) => {
     if (selectedFile) {
       const formData = new FormData();
       formData.append("report", selectedFile);
-      // formData.append("donor", data.id); //Put the user Id , figure out how to pass (Rehan)
-      // formData.append("hospital_name", 6); // it should be hard coded bcz there is only 1 hospital (rehan)
+      formData.append("donor", donorId); //Put the user Id , figure out how to pass (Rehan)
+      formData.append("hospital_name", "6"); // it should be hard coded bcz there is only 1 hospital (rehan)
 
       try {
         const response: any = await apiHelper("post", endpoint.uploadDonorPDF, formData, true);
@@ -165,6 +165,10 @@ const UpdateDonorTable: FC<CustomTableProps> = (props) => {
         console.error("Error uploading PDF:", error);
         // Handle error, show error message, etc.
       }
+    }
+    else {
+      console.error("PDF API didn't hit !!!!!!!!!!!!!!!!!!!!!11");
+
     }
   };
 
@@ -307,6 +311,7 @@ const UpdateDonorTable: FC<CustomTableProps> = (props) => {
                                   backgroundColor: "#1976D2",
                                   padding: "7px",
                                 }}
+                                onClick={() => handleUpload(row.original.id)}
                               >
                                 <DriveFolderUploadIcon
                                   sx={{ fontSize: 27, color: "#fff" }} />

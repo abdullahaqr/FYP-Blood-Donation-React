@@ -17,7 +17,7 @@ export const endpoint = {
   getUniversityById: "/university",
   getDonationsList: "/donation",
   getDonorById: "/users",
-  // getHospitalDonorById: "/list_hospital_donors",
+  getHospitalDonorById: "/list_hospital_donors",
   uploadDonorPDF: "/donation",
 };
 

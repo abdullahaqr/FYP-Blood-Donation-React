@@ -1,5 +1,5 @@
 import useAuth from "hooks/useAuth";
-import { Fragment, ReactNode, useState } from "react";
+import { Fragment, ReactNode, useEffect, useState } from "react";
 import { Navigate, useLocation } from "react-router-dom";
 import { urls } from "../../constants";
 
@@ -15,20 +15,32 @@ const AuthGuard = ({ children }: AuthGuardProps) => {
     null
   );
 
-  if (localStorage.getItem("accessToken")) {
-    if (pathname !== requestedLocation) {
+  // if (localStorage.getItem("accessToken")) {
+  //   if (pathname !== requestedLocation) {
+  //     setRequestedLocation(pathname);
+  //   }
+  //   return <Fragment>{children}</Fragment>;
+  // } else {
+  //   // return <Login />;
+  //   return <Navigate to={urls.signIn} />;
+  // }
+
+  // // if (requestedLocation && pathname !== requestedLocation) {
+  // //   setRequestedLocation(null);
+  // //   return <Navigate to={requestedLocation} />;
+  // // }
+
+  useEffect(() => {
+    if (!isAuthenticated && pathname !== urls.signIn) {
       setRequestedLocation(pathname);
     }
+  }, [isAuthenticated, pathname]);
+
+  if (isAuthenticated || pathname === urls.signIn) {
     return <Fragment>{children}</Fragment>;
   } else {
-    // return <Login />;
     return <Navigate to={urls.signIn} />;
   }
-
-  // if (requestedLocation && pathname !== requestedLocation) {
-  //   setRequestedLocation(null);
-  //   return <Navigate to={requestedLocation} />;
-  // }
 };
 
 export default AuthGuard;

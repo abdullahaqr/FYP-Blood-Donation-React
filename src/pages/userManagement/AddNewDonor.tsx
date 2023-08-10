@@ -13,6 +13,7 @@ import {
   Select
 } from "@mui/material";
 import LightTextField from "components/LightTextField";
+import UkoAvatar from "components/UkoAvatar";
 import { useFormik } from "formik";
 import useTitle from "hooks/useTitle";
 import { FC, useEffect, useState } from "react";
@@ -139,6 +140,7 @@ const AddNewDonor: FC = () => {
     initialValues,
     validationSchema,
     onSubmit: () => {
+      debugger
       const formData = new FormData();
       formData.append("first_name", values.first_name);
       formData.append("last_name", values.last_name);
@@ -220,6 +222,8 @@ const AddNewDonor: FC = () => {
           setFieldValue("dob", res?.data?.dob)
           setFieldValue("city", res?.data?.city)
           setFieldValue("address", res?.data?.address)
+          setimageURL(res?.data?.image_url)
+
           console.log(res, "!!!!!!!!!!!!!!!!!!")
         }
       })
@@ -254,6 +258,8 @@ const AddNewDonor: FC = () => {
   // });
 
 
+
+  const [imageURL, setimageURL] = useState("");
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -317,7 +323,21 @@ const AddNewDonor: FC = () => {
           {/* <Grid item md={8} xs={12}> */}
           <Grid item xs={12}>
             {urlEdit &&
-              <div style={{ alignSelf: "center" }}>This is</div>
+              // <div style={{ alignSelf: "center" }}>This is</div>
+              <Grid item sm={12} xs={12}>
+                <UkoAvatar
+                  // src={user?.avatar || "/static/avatar/001-man.svg"}
+                  // src={imageURL === "" ? "/static/avatar/001-man.svg" : imageURL}
+                  src={imageURL === "http://localhost:8000/media/" ? "/static/avatar/001-man.svg" : imageURL}
+                  sx={{
+                    border: 4,
+                    width: 100,
+                    height: 100,
+                    borderColor: "background.paper",
+                    margin: "15px auto 25px auto",
+                  }}
+                />
+              </Grid>
             }
             <Card sx={{ padding: 3, boxShadow: 2 }}>
               {/* <form onSubmit={handleSubmit}> */}

@@ -14,8 +14,10 @@ import SearchInput from "components/SearchInput";
 import { BlogCategoryList } from "components/userManagement/columnShape";
 import useTitle from "hooks/useTitle";
 import React, { FC, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import apiHelper from "utils/axiosSetup";
-import { endpoint } from "../../constants";
+import { endpoint, urls } from "../../constants";
 import CategoryCustomTable from "./CategoryCustomTable";
 
 // styled component
@@ -52,6 +54,7 @@ const BlogCategory: FC = () => {
   const [categoryName, setCategoryName] = useState("");
   const [categoryId, setCategoryId] = useState<any>(null);
 
+  let navigate = useNavigate();
   useEffect(() => {
     apiHelper("get", endpoint.getCategories, undefined, true).then((res) => {
       if (res?.status == 200) {
@@ -73,9 +76,19 @@ const BlogCategory: FC = () => {
     formData.append("name", categoryName);
     setOpen(false); // Close the modal after submitting
 
-    apiHelper("put", `${endpoint.getCategoryById}/${categoryId}`, formData, true)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+    const apiEndpoint = categoryId
+      ? `${endpoint.getCategoryById}/${categoryId}`
+      : `${endpoint.getCategories}`;
+
+    const httpMethod = categoryId ? "put" : "post";
+
+    apiHelper(httpMethod, apiEndpoint, formData, true)
+      .then(res => {
+        console.log(res)
+        toast.success("Success!");
+        navigate(urls.categoryList);
+      })
+      .catch(err => console.log(err));
 
     setEditCategoryData(null);
   };

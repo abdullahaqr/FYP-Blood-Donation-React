@@ -125,8 +125,6 @@ const AddNewDonor: FC = () => {
     gender: Yup.string().required("Gender is Required!"),
     university_name: Yup.string().required("University Name is Required!"),
     seat_no: Yup.string().required("Seat Number is Required!"),
-    city: Yup.string().required("City is Required!"),
-    address: Yup.string().required("Address is Required!"),
   });
 
   // const formatDate = (date: any): string => {

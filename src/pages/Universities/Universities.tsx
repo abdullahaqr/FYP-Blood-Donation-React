@@ -14,8 +14,10 @@ import SearchInput from "components/SearchInput";
 import { GetUniversities } from "components/userManagement/columnShape";
 import useTitle from "hooks/useTitle";
 import { FC, useEffect, useState } from "react";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 import apiHelper from "utils/axiosSetup";
-import { endpoint } from "../../constants";
+import { endpoint, urls } from "../../constants";
 import UniversityCustomTable from "./UniversityCustomTable";
 
 // styled component
@@ -51,6 +53,7 @@ const Universities: FC = () => {
   useTitle("Universities");
   const [data, setData] = useState<any>([])
 
+  let navigate = useNavigate();
   useEffect(() => {
     apiHelper("get", endpoint.getUniversities, undefined, true).then((res) => {
       if (res?.status == 200) {
@@ -71,9 +74,19 @@ const Universities: FC = () => {
     formData.append("name", universityName);
     setOpen(false); // Close the modal after submitting
 
-    apiHelper("put", `${endpoint.getUniversityById}/${universityId}`, formData)
-      .then(res => console.log(res))
-      .catch(err => console.log(err))
+    const apiEndpoint = universityId
+      ? `${endpoint.getUniversityById}/${universityId}`
+      : `${endpoint.getUniversities}`;
+
+    const httpMethod = universityId ? "put" : "post";
+
+    apiHelper(httpMethod, apiEndpoint, formData, true)
+      .then(res => {
+        console.log(res)
+        toast.success("Success!");
+        navigate(urls.universityList);
+      })
+      .catch(err => console.log(err));
 
     setEditUniversityData(null);
   };

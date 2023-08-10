@@ -25,6 +25,8 @@ export const urls = {
   signIn: "/login",
   editDonor: "/dashboard/edit-donor",
   donorList: "/dashboard/donor-list",
+  categoryList: "/dashboard/blogs-category",
+  universityList: "/dashboard/universities",
   eventList: "/dashboard/events",
   blogList: "/dashboard/blog-posts",
 };
